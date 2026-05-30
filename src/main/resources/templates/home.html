@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" type="text/css" href="/css/home-common.css">
+  <link rel="stylesheet" type="text/css" href="/css/home.css">
+  <title>Home</title>
+</head>
+<body>
+<main>
+  <div class="nav-bar">
+    <div class="side-bar-container">
+      <nav>
+        <div class="side_navbar">
+          <div class="smart-wallet-nav-bar">
+            <div class="smart-wallet-nav-bar-name">Food Mood Journal</div>
+            <div class="smart-wallet-nav-bar-version">v1.0.0</div>
+          </div>
+          <div class="func-block">
+            <a href="/home" class="active">
+              <p>Dashboard</p>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"></path>
+              </svg>
+            </a>
+          </div>
+          <div class="func-block">
+            <span>Journal</span>
+            <a href="#">
+              <p>Foods</p>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"></path>
+              </svg>
+            </a>
+            <a href="#">
+              <p>Meals</p>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"></path>
+              </svg>
+            </a>
+            <a href="#">
+              <p>Statistics</p>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"></path>
+              </svg>
+            </a>
+          </div>
+          <div class="func-block">
+            <a class="logout" href="/logout">
+              <p>Logout</p>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="home-section">
+    <div class="single-section-box home-profile-information">
+      <div class="profile-header">
+        <h2 class="profile-name" th:text="${user.username}">User</h2>
+        <div class="profile-status-role-container">
+          <p class="active-profile" th:text="${user.role}">USER</p>
+        </div>
+        <div class="details-section">
+          <div class="details-section-container">
+            <strong>User id: </strong>
+            <p th:text="${user.id}"></p>
+          </div>
+        </div>
+      </div>
+      <div class="profile-info">
+        <div class="details-section-container">
+          <strong>Username: </strong>
+          <p th:text="${user.username}"></p>
+        </div>
+        <div class="details-section-container">
+          <strong>Email: </strong>
+          <p th:text="${user.email}"></p>
+        </div>
+        <div class="details-section-container">
+          <strong>Joined: </strong>
+          <p th:text="${user.createdOn}"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="single-section-box home-standard-wallet">
+      <div class="default-label-box">
+        <p>Welcome</p>
+      </div>
+      <div class="wallet-balance">
+        <p class="available-balance-text">Track what you eat and how you feel after every meal.</p>
+      </div>
+      <div class="details-section">
+        <div class="details-section-container">
+          <strong>Next steps: </strong>
+          <p>Add foods, log meals, and fill in your wellness scores.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

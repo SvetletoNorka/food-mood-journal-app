@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/css/common.css">
+  <link rel="stylesheet" type="text/css" href="/css/form.css">
+  <link rel="stylesheet" type="text/css" href="/css/journal-brand.css">
+  <title>Register</title>
+</head>
+<body>
+<main>
+  <section class="section full-height">
+    <div class="container">
+      <a href="/" class="brand-link">
+        <h1 class="brand-title brand-title-small">Food Mood Journal</h1>
+      </a>
+    </div>
+
+    <form class="form" th:action="@{/register}" th:object="${userRegisterRequest}" method="post">
+      <h3>Register Here</h3>
+
+      <label for="username">Username</label>
+      <input type="text" placeholder="Username" id="username" th:field="*{username}" required>
+
+      <label for="email">Email</label>
+      <input type="email" placeholder="Email" id="email" th:field="*{email}" required>
+
+      <label for="password">Password</label>
+      <input type="password" placeholder="Password" id="password" th:field="*{password}" required>
+
+      <button type="submit">Register</button>
+      <p class="form-already">Already have an account? <a href="/login">Login</a>!</p>
+    </form>
+  </section>
+</main>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

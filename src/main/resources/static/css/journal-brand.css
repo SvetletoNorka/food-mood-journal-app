@@ -1,0 +1,29 @@
+.brand-link {
+  text-decoration: none;
+  text-align: center;
+}
+
+.brand-title {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 4rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  background: radial-gradient(circle at 90% top, #d2c8f4 0%, #c4bbeb 20%, #b7aee2 40%, #9087c8 60%, #766fb0 80%, #4f4c8c 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-title-small {
+  font-size: 2.5rem;
+}
+
+.brand-tagline {
+  margin-top: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 520px;
+}
