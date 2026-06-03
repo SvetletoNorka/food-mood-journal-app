@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="sidebar(activePage)" class="side-bar-container">
+  <nav>
+    <div class="side_navbar">
+      <div class="journal-nav-bar">
+        <div class="journal-nav-bar-name">Food Mood Journal</div>
+        <div class="journal-nav-bar-version">v1.0.0</div>
+      </div>
+      <div class="func-block">
+        <a href="/home" th:classappend="${activePage == 'home'} ? 'active' : ''">
+          <p>Dashboard</p>
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="func-block">
+        <span>Journal</span>
+        <a href="/foods" th:classappend="${activePage == 'foods'} ? 'active' : ''">
+          <p>Foods</p>
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M4 10h16M8 14h8M6 18h12"></path>
+          </svg>
+        </a>
+        <a href="/meals" th:classappend="${activePage == 'meals'} ? 'active' : ''">
+          <p>Meals</p>
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 8v8m-4-4h8"></path>
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle>
+          </svg>
+        </a>
+        <a href="/statistics" th:classappend="${activePage == 'statistics'} ? 'active' : ''">
+          <p>Statistics</p>
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M4 19V5m6 14V9m6 10V3"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="func-block">
+        <a class="logout" href="/logout">
+          <p>Logout</p>
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+</div>
+</body>
+</html>

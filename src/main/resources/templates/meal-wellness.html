@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" href="/css/home-common.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
+  <link rel="stylesheet" href="/css/food-form.css">
+  <title>Wellness Log</title>
+</head>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
+<main>
+  <div class="nav-bar">
+    <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
+  </div>
+  <div class="home-section">
+    <div class="journal-form-panel">
+      <a th:href="@{/meals/{id}(id=${mealId})}" class="back-link">← Back to meal</a>
+      <h2>How do you feel?</h2>
+      <p class="meal-card-meta" th:text="${meal.mealType} + ' — ' + ${#temporals.format(meal.eatenAt, 'dd MMM yyyy')}"></p>
+
+      <div class="wellness-mood-preview">
+        <img id="moodPreview" src="/images/mood/neutral.svg" class="mood-emoji-lg" alt="Your mood">
+        <div class="mood-legend-item">
+          <span id="moodLabel">Move the slider — see your face change</span>
+        </div>
+      </div>
+
+      <form th:action="@{/meals/{id}/wellness(id=${mealId})}" th:object="${wellnessLogRequest}" method="post">
+        <label for="moodScore">Mood (1–10)</label>
+        <input type="range" id="moodScore" min="1" max="10" th:field="*{moodScore}">
+        <output id="moodOut" th:text="*{moodScore}">5</output>
+        <p class="alert-warning" th:if="${#fields.hasErrors('moodScore')}" th:errors="*{moodScore}"></p>
+
+        <label for="energyScore">Energy (1–10)</label>
+        <input type="range" id="energyScore" min="1" max="10" th:field="*{energyScore}">
+        <output id="energyOut" th:text="*{energyScore}">5</output>
+        <p class="alert-warning" th:if="${#fields.hasErrors('energyScore')}" th:errors="*{energyScore}"></p>
+
+        <label for="notes">Notes (optional)</label>
+        <textarea id="notes" th:field="*{notes}" rows="3"></textarea>
+
+        <button type="submit">Save wellness log</button>
+      </form>
+    </div>
+  </div>
+</main>
+<script>
+  const mood = document.getElementById('moodScore');
+  const preview = document.getElementById('moodPreview');
+  const label = document.getElementById('moodLabel');
+
+  function moodFace(value) {
+    const v = parseInt(value, 10);
+    if (v >= 8) return { src: '/images/mood/happy.svg', text: 'Smiling — great mood!' };
+    if (v >= 5) return { src: '/images/mood/neutral.svg', text: 'Neutral — okay' };
+    return { src: '/images/mood/sad.svg', text: 'Frowning — low mood' };
+  }
+
+  function updateMoodUi() {
+    const f = moodFace(mood.value);
+    preview.src = f.src;
+    label.textContent = f.text;
+    document.getElementById('moodOut').textContent = mood.value;
+  }
+
+  mood?.addEventListener('input', updateMoodUi);
+  document.getElementById('energyScore')?.addEventListener('input', (e) => {
+    document.getElementById('energyOut').textContent = e.target.value;
+  });
+  updateMoodUi();
+</script>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

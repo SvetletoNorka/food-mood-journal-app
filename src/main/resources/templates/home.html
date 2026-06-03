@@ -2,67 +2,21 @@
 <html lang="bg" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="/css/common.css">
-  <link rel="stylesheet" type="text/css" href="/css/nav-side-bar.css">
-  <link rel="stylesheet" type="text/css" href="/css/home-common.css">
-  <link rel="stylesheet" type="text/css" href="/css/home.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" href="/css/home-common.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
   <title>Home</title>
 </head>
-<body>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
 <main>
   <div class="nav-bar">
-    <div class="side-bar-container">
-      <nav>
-        <div class="side_navbar">
-          <div class="smart-wallet-nav-bar">
-            <div class="smart-wallet-nav-bar-name">Food Mood Journal</div>
-            <div class="smart-wallet-nav-bar-version">v1.0.0</div>
-          </div>
-          <div class="func-block">
-            <a href="/home" class="active">
-              <p>Dashboard</p>
-              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 7h14M5 12h14M5 17h14"></path>
-              </svg>
-            </a>
-          </div>
-          <div class="func-block">
-            <span>Journal</span>
-            <a href="#">
-              <p>Foods</p>
-              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"></path>
-              </svg>
-            </a>
-            <a href="#">
-              <p>Meals</p>
-              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"></path>
-              </svg>
-            </a>
-            <a href="#">
-              <p>Statistics</p>
-              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M12 6h.01M12 12h.01M12 18h.01"></path>
-              </svg>
-            </a>
-          </div>
-          <div class="func-block">
-            <a class="logout" href="/logout">
-              <p>Logout</p>
-              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"></path>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </nav>
-    </div>
+    <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
   </div>
 
   <div class="home-section">
@@ -71,12 +25,6 @@
         <h2 class="profile-name" th:text="${user.username}">User</h2>
         <div class="profile-status-role-container">
           <p class="active-profile" th:text="${user.role}">USER</p>
-        </div>
-        <div class="details-section">
-          <div class="details-section-container">
-            <strong>User id: </strong>
-            <p th:text="${user.id}"></p>
-          </div>
         </div>
       </div>
       <div class="profile-info">
@@ -97,15 +45,38 @@
 
     <div class="single-section-box home-standard-wallet">
       <div class="default-label-box">
-        <p>Welcome</p>
+        <p>Your wellness journal</p>
       </div>
       <div class="wallet-balance">
-        <p class="available-balance-text">Track what you eat and how you feel after every meal.</p>
+        <p class="available-balance-text">Log pizza, doner, poke bowls or veggies — then rate your mood with a smile (or not).</p>
       </div>
+
+      <div class="home-food-strip">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=200&h=120&fit=crop" alt="Pizza">
+        <img src="https://images.unsplash.com/photo-1529006557810-274dba974562?w=200&h=120&fit=crop" alt="Doner">
+        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=200&h=120&fit=crop" alt="Poke bowl">
+        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200&h=120&fit=crop" alt="Vegetables">
+      </div>
+
+      <div class="home-mood-row">
+        <img src="/images/mood/happy.svg" class="mood-emoji" alt="">
+        <img src="/images/mood/neutral.svg" class="mood-emoji" alt="">
+        <img src="/images/mood/sad.svg" class="mood-emoji" alt="">
+        <span>Your mood after each meal appears as a face in your journal.</span>
+      </div>
+
       <div class="details-section">
         <div class="details-section-container">
-          <strong>Next steps: </strong>
-          <p>Add foods, log meals, and fill in your wellness scores.</p>
+          <strong><a href="/foods" class="link-accent-lilac">Foods</a></strong>
+          <p>Build your library — pizza, salads, and more.</p>
+        </div>
+        <div class="details-section-container">
+          <strong><a href="/meals/new" class="link-accent-pink">Log a meal</a></strong>
+          <p>Record what you ate and how you felt.</p>
+        </div>
+        <div class="details-section-container">
+          <strong><a href="/statistics" class="link-accent-blush">Statistics</a></strong>
+          <p>See which meals match your best moods.</p>
         </div>
       </div>
     </div>

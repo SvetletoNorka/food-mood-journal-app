@@ -1,0 +1,231 @@
+/* Light inspiring blush pink & soft lilac */
+:root {
+  --journal-pink-blush: #fce7f3;
+  --journal-pink: #f5b8d4;
+  --journal-pink-deep: #e891b8;
+  --journal-rose: #d97aab;
+  --journal-lilac-soft: #ede9fe;
+  --journal-lilac: #c4b5fd;
+  --journal-lilac-mid: #a78bfa;
+  --journal-lilac-deep: #8b6fd4;
+  --journal-lilac-dark: #6d5aaa;
+  --journal-cream: #fff9fc;
+  --journal-cream-card: #fdf5ff;
+  --journal-text: #5b4a75;
+  --journal-text-soft: #7c6b9a;
+}
+
+body.journal-app-bg {
+  background: linear-gradient(
+    165deg,
+    #fff9fc 0%,
+    #fdf2f8 18%,
+    #fce7f3 35%,
+    #fae8ff 55%,
+    #ede9fe 75%,
+    #e9d5ff 100%
+  ) no-repeat fixed;
+  color: var(--journal-text);
+  min-height: 100vh;
+}
+
+body.journal-app-bg main,
+body.journal-app-bg .header {
+  position: relative;
+  z-index: 1;
+}
+
+body.journal-app-bg .footer {
+  color: var(--journal-text-soft);
+  position: relative;
+  z-index: 1;
+}
+
+body.journal-app-bg .button {
+  color: var(--journal-lilac-dark);
+  border-color: rgba(167, 139, 250, 0.55);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+body.journal-app-bg .button.login:hover,
+body.journal-app-bg .button.register:hover {
+  color: #fff;
+}
+
+body.journal-app-bg form.form {
+  background: rgba(255, 255, 255, 0.88);
+  border: 2px solid rgba(196, 181, 253, 0.45);
+  box-shadow: 0 12px 40px rgba(167, 139, 250, 0.2);
+  backdrop-filter: blur(12px);
+}
+
+body.journal-app-bg form.form * {
+  color: var(--journal-text);
+}
+
+body.journal-app-bg form.form input,
+body.journal-app-bg form.form select {
+  background-color: rgba(237, 233, 254, 0.5);
+  border: 1px solid rgba(196, 181, 253, 0.5);
+  color: var(--journal-text);
+}
+
+body.journal-app-bg form.form ::placeholder {
+  color: #9a8ab8;
+}
+
+body.journal-app-bg .form-already {
+  color: var(--journal-text-soft);
+}
+
+/* Floating background decor */
+.journal-bg-decor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.journal-bg-decor .bg-float {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.14;
+  object-fit: cover;
+}
+
+.journal-bg-decor .bg-emoji {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  opacity: 0.12;
+}
+
+.journal-bg-decor .bg-food {
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+}
+
+.journal-bg-decor .bg-emoji-1 { top: 8%; left: 5%; }
+.journal-bg-decor .bg-emoji-2 { top: 55%; right: 8%; }
+.journal-bg-decor .bg-emoji-3 { bottom: 12%; left: 12%; }
+.journal-bg-decor .bg-food-1 { top: 15%; right: 10%; }
+.journal-bg-decor .bg-food-2 { bottom: 20%; right: 18%; }
+.journal-bg-decor .bg-food-3 { top: 42%; left: 3%; }
+.journal-bg-decor .bg-food-4 { bottom: 8%; right: 5%; }
+
+.journal-nav-bar-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, var(--journal-rose) 0%, var(--journal-lilac-mid) 50%, var(--journal-lilac-deep) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.journal-nav-bar-version {
+  font-size: 0.75rem;
+  color: var(--journal-text-soft);
+}
+
+.func-block a.active {
+  background: linear-gradient(135deg, rgba(245, 184, 212, 0.45), rgba(196, 181, 253, 0.5));
+  color: var(--journal-lilac-dark);
+  font-weight: 500;
+}
+
+.brand-title {
+  background: linear-gradient(135deg, var(--journal-rose) 0%, var(--journal-lilac-mid) 45%, var(--journal-lilac-deep) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-tagline {
+  color: var(--journal-text-soft);
+}
+
+.hero-visual {
+  display: flex;
+  gap: 20px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-card {
+  width: 200px;
+  height: 140px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px rgba(167, 139, 250, 0.28);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+}
+
+.hero-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mood-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  background: linear-gradient(135deg, var(--journal-lilac-mid), var(--journal-pink-deep));
+  color: #fff;
+}
+
+.food-card-block,
+.meal-card-block,
+.report-block {
+  background: linear-gradient(145deg, #ffffff, var(--journal-cream-card));
+}
+
+.food-card-block::before,
+.meal-card-block::before {
+  content: '';
+  position: absolute;
+  width: 280px;
+  height: 140px;
+  border-radius: 90%;
+  opacity: 0.35;
+  filter: blur(40px);
+  background: radial-gradient(circle, rgba(245, 184, 212, 0.5), rgba(167, 139, 250, 0.35));
+  top: -60px;
+  right: -80px;
+  z-index: 0;
+}
+
+.link-accent-pink {
+  color: var(--journal-rose);
+  text-decoration: none;
+}
+
+.link-accent-pink:hover {
+  color: var(--journal-lilac-mid);
+}
+
+.link-accent-lilac {
+  color: var(--journal-lilac-deep);
+  text-decoration: none;
+}
+
+.link-accent-lilac:hover {
+  color: var(--journal-pink-deep);
+}
+
+.link-accent-blush {
+  color: var(--journal-lilac-dark);
+  text-decoration: none;
+}
+
+.link-accent-blush:hover {
+  color: var(--journal-rose);
+}
+
+.empty-state {
+  color: var(--journal-text-soft);
+}

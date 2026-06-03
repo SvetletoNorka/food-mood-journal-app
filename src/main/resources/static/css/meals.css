@@ -1,0 +1,105 @@
+.meal-card-block.meal-card-mood {
+  grid-template-columns: auto 1fr auto;
+}
+
+.meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.meal-card-block {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(196, 181, 253, 0.35);
+  border-radius: 16px;
+  padding: 24px 28px;
+  background: linear-gradient(145deg, #ffffff, var(--journal-cream-card));
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.meal-card-block h3 {
+  margin: 0 0 8px;
+  color: var(--journal-lilac-dark);
+}
+
+.meal-card-meta {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.meal-card-totals {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.meal-card-actions a {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--journal-lilac-mid), var(--journal-lilac-deep));
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.wellness-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(196, 181, 253, 0.25);
+  color: var(--journal-lilac-dark);
+  font-size: 0.85rem;
+}
+
+.new-meal-banner {
+  margin-bottom: 24px;
+}
+
+.new-meal-banner a {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--journal-pink), var(--journal-lilac-mid));
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(167, 139, 250, 0.35);
+}
+
+.meal-entry-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: end;
+}
+
+.meal-entry-row select,
+.meal-entry-row input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(196, 181, 253, 0.5);
+  font-family: inherit;
+}
+
+.btn-add-entry {
+  margin-top: 8px;
+  padding: 8px 16px;
+  border: 1px dashed var(--journal-lilac-mid);
+  background: transparent;
+  color: var(--journal-lilac-dark);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+}

@@ -65,9 +65,10 @@ body {
 }
 
 .button.login:hover, .button.register:hover {
-  background: radial-gradient(circle at 90% top, #746ab0 0%, #6a61a4 10%, #605899 20%, #56508d 30%, #4c477f 40%, #423f73 50%, #383666 60%, #2e2d5a 70%, #24244d 80%, #1a1a41 90%, #101035 100%);
+  background: linear-gradient(135deg, #f5b8d4, #c4b5fd, #a78bfa);
   color: white;
-  box-shadow: inset 0 1px 9px rgba(255, 255, 255, 0.8); /* Inset shadow with transparency */
+  box-shadow: inset 0 1px 9px rgba(255, 255, 255, 0.8);
+  border-color: rgba(245, 184, 212, 0.6);
 }
 
 

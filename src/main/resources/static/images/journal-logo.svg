@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" role="img" aria-label="Food Mood Journal">
+  <defs>
+    <linearGradient id="blush" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f5b8d4"/>
+      <stop offset="45%" style="stop-color:#e891b8"/>
+      <stop offset="100%" style="stop-color:#a78bfa"/>
+    </linearGradient>
+  </defs>
+  <circle cx="40" cy="40" r="28" fill="url(#blush)" opacity="0.95"/>
+  <path d="M40 18 Q52 40 40 62 Q28 40 40 18" fill="#fff9fc"/>
+  <circle cx="58" cy="28" r="6" fill="#c4b5fd"/>
+  <text x="80" y="48" font-family="Poppins, sans-serif" font-size="22" font-weight="600" fill="url(#blush)">Food Mood Journal</text>
+</svg>

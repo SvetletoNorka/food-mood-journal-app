@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Low mood">
+  <circle cx="32" cy="32" r="30" fill="#e9d5ff" stroke="#8b6fd4" stroke-width="2"/>
+  <circle cx="22" cy="28" r="4" fill="#6d5aaa"/>
+  <circle cx="42" cy="28" r="4" fill="#6d5aaa"/>
+  <path d="M18 46 Q32 34 46 46" fill="none" stroke="#6d5aaa" stroke-width="3" stroke-linecap="round"/>
+</svg>

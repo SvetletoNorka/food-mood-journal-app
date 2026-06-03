@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" href="/css/home-common.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
+  <link rel="stylesheet" href="/css/meals.css">
+  <title>Meal Details</title>
+</head>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
+<main>
+  <div class="nav-bar">
+    <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
+  </div>
+  <div class="home-section">
+    <div class="single-section-box" style="max-width:640px;color:#333">
+      <a href="/meals" class="back-link link-accent-lilac">← All meals</a>
+      <div style="display:flex;align-items:center;gap:16px;margin:12px 0">
+        <div th:replace="~{fragments/mood-icon :: moodIcon(${meal.moodScore})}"></div>
+        <h2 style="margin:0" th:text="${meal.mealType} + ' — ' + ${#temporals.format(meal.eatenAt, 'dd MMM yyyy HH:mm')}">Meal</h2>
+      </div>
+
+      <h3>Foods</h3>
+      <ul>
+        <li th:each="entry : ${meal.foods}">
+          <span th:text="${entry.foodName} + ' — ' + ${entry.quantityInGrams} + 'g'"></span>
+          <span th:text="' (Cal ' + ${entry.calories} + ')'"></span>
+        </li>
+      </ul>
+
+      <div class="meal-card-totals" style="margin:16px 0">
+        <strong>Totals:</strong>
+        <span th:text="'Cal ' + ${meal.totalCalories}"></span>
+        <span th:text="'P ' + ${meal.totalProtein} + 'g'"></span>
+        <span th:text="'F ' + ${meal.totalFat} + 'g'"></span>
+        <span th:text="'C ' + ${meal.totalCarbs} + 'g'"></span>
+      </div>
+
+      <div th:if="${meal.moodScore != null}" style="margin-top:20px">
+        <h3>How you felt <span class="mood-badge">Wellness</span></h3>
+        <p th:text="'Mood: ' + ${meal.moodScore} + '/10 · Energy: ' + ${meal.energyScore} + '/10'"></p>
+        <p th:if="${meal.notes}" th:text="${meal.notes}"></p>
+        <a th:href="@{/meals/{id}/wellness(id=${meal.id})}" class="btn-edit" style="display:inline-block;margin-top:8px;text-decoration:none">Update wellness</a>
+      </div>
+      <div th:if="${meal.moodScore == null}">
+        <p>How did this meal make you feel? Pick a smiling or frowning face.</p>
+        <a th:href="@{/meals/{id}/wellness(id=${meal.id})}" class="btn-edit" style="display:inline-block;text-decoration:none;padding:10px 18px">Log mood &amp; energy</a>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

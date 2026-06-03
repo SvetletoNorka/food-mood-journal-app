@@ -5,7 +5,9 @@ import app.model.dto.user.UserDto;
 import app.model.dto.user.UserLoginRequest;
 import app.model.dto.user.UserRegisterRequest;
 import app.service.user.UserService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,16 +36,26 @@ public class IndexController {
         }
 
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("userLoginData", UserLoginRequest.builder().build());
+        modelAndView.addObject("userLoginRequest", UserLoginRequest.builder().build());
         return modelAndView;
     }
 
     @PostMapping("/login")
-    public ModelAndView login(@ModelAttribute UserLoginRequest userLoginRequest) {
-        UserDto user = userService.login(userLoginRequest);
-        userSession.login(user.getId(), user.getUsername());
+    public ModelAndView login(@Valid @ModelAttribute("userLoginRequest") UserLoginRequest userLoginRequest,
+                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("login");
+        }
 
-        return new ModelAndView("redirect:/home");
+        try {
+            UserDto user = userService.login(userLoginRequest);
+            userSession.login(user.getId(), user.getUsername());
+            return new ModelAndView("redirect:/home");
+        } catch (RuntimeException ex) {
+            ModelAndView modelAndView = new ModelAndView("login");
+            modelAndView.addObject("errorMessage", ex.getMessage());
+            return modelAndView;
+        }
     }
 
     @GetMapping("/register")
@@ -58,20 +70,33 @@ public class IndexController {
     }
 
     @PostMapping("/register")
-    public ModelAndView registerUser(@ModelAttribute UserRegisterRequest userRegisterRequest) {
-        userService.register(userRegisterRequest);
-        return new ModelAndView("redirect:/login");
+    public ModelAndView registerUser(@Valid @ModelAttribute("userRegisterRequest") UserRegisterRequest userRegisterRequest,
+                                     BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("register");
+        }
+
+        try {
+            userService.register(userRegisterRequest);
+            return new ModelAndView("redirect:/login");
+        } catch (RuntimeException ex) {
+            ModelAndView modelAndView = new ModelAndView("register");
+            modelAndView.addObject("errorMessage", ex.getMessage());
+            return modelAndView;
+        }
     }
 
     @GetMapping("/home")
     public ModelAndView getHomePage() {
-        if (!userSession.isLoggedIn()) {
-            return new ModelAndView("redirect:/login");
+        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
+        if (redirect != null) {
+            return redirect;
         }
 
         UserDto user = userService.findById(userSession.getId());
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("user", user);
+        modelAndView.addObject("activePage", "home");
         return modelAndView;
     }
 

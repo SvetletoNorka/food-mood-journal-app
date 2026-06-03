@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" href="/css/home-common.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
+  <link rel="stylesheet" href="/css/foods.css">
+  <title>Foods</title>
+</head>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
+<main>
+  <div class="nav-bar">
+    <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
+  </div>
+  <div class="home-section foods-grid">
+    <div class="foods-page-header">
+      <h2 style="margin:0;color:var(--journal-lilac-dark)">Your food library</h2>
+      <p style="color:var(--journal-text-soft);margin:8px 0 0">Pizza, doner, poke bowls, veggies — add what you eat.</p>
+      <div class="foods-gallery-preview">
+        <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150&h=150&fit=crop" alt="Pizza" title="Pizza">
+        <img src="https://images.unsplash.com/photo-1529006557810-274dba974562?w=150&h=150&fit=crop" alt="Doner" title="Doner">
+        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=150&h=150&fit=crop" alt="Poke" title="Poke bowl">
+        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=150&h=150&fit=crop" alt="Veggies" title="Vegetables">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&h=150&fit=crop" alt="Bowl" title="Healthy bowl">
+      </div>
+    </div>
+    <div class="empty-state" th:if="${#lists.isEmpty(foods)}">
+      <img src="/images/mood/happy.svg" class="mood-emoji-lg" alt="">
+      <h2>No foods yet</h2>
+      <p>Add pizza, salad, or your favourites to start logging meals.</p>
+    </div>
+    <div class="food-card-block" th:each="food : ${foods}">
+      <h3 th:text="${food.name}">Food</h3>
+      <div class="food-macros">
+        <span><strong>Cal:</strong> <span th:text="${food.caloriesPer100g}"></span>/100g</span>
+        <span><strong>Protein:</strong> <span th:text="${food.proteinPer100g}"></span>g</span>
+        <span><strong>Fat:</strong> <span th:text="${food.fatPer100g}"></span>g</span>
+        <span><strong>Carbs:</strong> <span th:text="${food.carbsPer100g}"></span>g</span>
+      </div>
+      <div class="food-card-actions">
+        <a th:href="@{/foods/{id}/edit(id=${food.id})}" class="btn-edit">Edit</a>
+        <form th:action="@{/foods/{id}/delete(id=${food.id})}" method="post" style="display:inline">
+          <button type="submit" class="btn-delete">Delete</button>
+        </form>
+      </div>
+    </div>
+    <div class="new-food-card">
+      <a href="/foods/new" title="Add food">+</a>
+    </div>
+  </div>
+</main>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

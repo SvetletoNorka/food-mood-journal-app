@@ -4,17 +4,20 @@
   <meta charset="UTF-8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="/css/common.css">
-  <link rel="stylesheet" type="text/css" href="/css/index.css">
-  <link rel="stylesheet" type="text/css" href="/css/journal-brand.css">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/journal-brand.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
   <title>Food Mood Journal</title>
 </head>
-<body>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
 <header class="header">
   <div class="header-inner">
+    <a href="/"><img src="/images/journal-logo.svg" alt="Food Mood Journal" height="48"></a>
     <nav class="nav">
       <a href="/login" class="button login">Login</a>
       <a href="/register" class="button register">Register</a>
@@ -25,8 +28,51 @@
   <div class="logo-container">
     <a href="/" class="brand-link">
       <h1 class="brand-title">Food Mood Journal</h1>
-      <p class="brand-tagline">Discover which foods make you feel your best.</p>
+      <p class="brand-tagline">Discover which foods make you feel your best — from pizza to poke bowls.</p>
     </a>
+
+    <div class="food-mood-showcase">
+      <div class="food-mood-card">
+        <img class="mood-emoji-overlay" src="/images/mood/happy.svg" alt="Happy mood">
+        <img class="food-photo" src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&h=280&fit=crop" alt="Pizza">
+        <p class="food-label">Pizza · often great mood</p>
+      </div>
+      <div class="food-mood-card">
+        <img class="mood-emoji-overlay" src="/images/mood/happy.svg" alt="Happy mood">
+        <img class="food-photo" src="https://images.unsplash.com/photo-1529006557810-274dba974562?w=400&h=280&fit=crop" alt="Doner kebab">
+        <p class="food-label">Doner · comfort food</p>
+      </div>
+      <div class="food-mood-card">
+        <img class="mood-emoji-overlay" src="/images/mood/happy.svg" alt="Happy mood">
+        <img class="food-photo" src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400&h=280&fit=crop" alt="Poke bowl">
+        <p class="food-label">Poke bowl · balanced</p>
+      </div>
+      <div class="food-mood-card">
+        <img class="mood-emoji-overlay" src="/images/mood/happy.svg" alt="Happy mood">
+        <img class="food-photo" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=280&fit=crop" alt="Fresh vegetables">
+        <p class="food-label">Veggies · feel-good</p>
+      </div>
+      <div class="food-mood-card">
+        <img class="mood-emoji-overlay" src="/images/mood/neutral.svg" alt="Neutral mood">
+        <img class="food-photo" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=280&fit=crop" alt="Healthy bowl">
+        <p class="food-label">Buddha bowl · steady energy</p>
+      </div>
+    </div>
+
+    <div class="mood-legend">
+      <div class="mood-legend-item">
+        <img src="/images/mood/happy.svg" class="mood-emoji" alt="">
+        <span>Mood 8–10 · smiling</span>
+      </div>
+      <div class="mood-legend-item">
+        <img src="/images/mood/neutral.svg" class="mood-emoji" alt="">
+        <span>Mood 5–7 · okay</span>
+      </div>
+      <div class="mood-legend-item">
+        <img src="/images/mood/sad.svg" class="mood-emoji" alt="">
+        <span>Mood 1–4 · low</span>
+      </div>
+    </div>
   </div>
 </main>
 <div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>

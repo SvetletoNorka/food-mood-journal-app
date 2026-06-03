@@ -30,11 +30,11 @@ main {
 form {
   height: auto;
   width: 400px;
-  background-color: rgba(100, 91, 240, 0.11);
+  background-color: rgba(196, 181, 253, 0.18);
   border-radius: 10px;
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 40px rgba(8, 7, 16, 0.31);
+  border: 2px solid rgba(245, 184, 212, 0.25);
+  box-shadow: 0 0 40px rgba(139, 111, 212, 0.25);
   padding: 36px 35px;
   align-self: center;
 }
@@ -89,10 +89,7 @@ option {
 button {
   margin-top: 50px;
   width: 100%;
-  background: radial-gradient(
-      circle at 90% top,
-      #d2c8f4 0%, /* Light lavender */ #c4bbeb 10%, /* Softer purple */ #b7aee2 20%, /* Muted purple */ #aaa1d9 30%, /* Gentle lavender */ #9d94d0 40%, /* Subtle lilac */ #9087c8 50%, /* Balanced light purple */ #837bbc 60%, /* Light grayish purple */ #766fb0 70%, /* Soft indigo */ #6963a4 80%, /* Muted navy */ #5c5798 90%, /* Deep lavender */ #4f4c8c 100% /* Rich lavender */
-  );
+  background: linear-gradient(135deg, #f5b8d4 0%, #e891b8 35%, #c4b5fd 70%, #a78bfa 100%);
   color: #ffffff;
   padding: 15px 0;
   font-size: 18px;

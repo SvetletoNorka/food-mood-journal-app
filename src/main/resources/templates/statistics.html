@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" href="/css/home-common.css">
+  <link rel="stylesheet" href="/css/reports.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
+  <link rel="stylesheet" href="/css/statistics.css">
+  <title>Statistics</title>
+</head>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
+<main>
+  <div class="nav-bar">
+    <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
+  </div>
+  <div class="home-section" style="display:flex;flex-direction:column;gap:24px;width:100%">
+    <div class="statistics-header">
+      <div class="statistics-summary">
+        <div class="stat-summary-card">
+          <span>Average mood</span>
+          <strong th:text="${statistics.averageMood}">0</strong>
+        </div>
+        <div class="stat-summary-card">
+          <span>Average energy</span>
+          <strong th:text="${statistics.averageEnergy}">0</strong>
+        </div>
+        <div class="stat-summary-card">
+          <span>Total meals</span>
+          <strong th:text="${#lists.size(statistics.allMeals)}">0</strong>
+        </div>
+      </div>
+      <form class="sort-form" method="get" action="/statistics">
+        <label for="sort">Top 5 meals by</label>
+        <select id="sort" name="sort">
+          <option th:each="s : ${T(app.model.dto.statistics.StatisticsSort).values()}"
+                  th:value="${s}" th:text="${s}" th:selected="${s == currentSort}"></option>
+        </select>
+        <button type="submit">Apply</button>
+      </form>
+    </div>
+
+    <div class="report-block stat-block-mood first-report-block" style="height:auto;min-height:200px">
+      <div class="default-label-box"><p>Top 5 meals</p></div>
+      <div class="top-meals-list" style="width:100%">
+        <p th:if="${#lists.isEmpty(statistics.topFive)}" style="color:#666">Log meals with wellness scores to see rankings.</p>
+        <div class="top-meal-item" th:each="meal, iter : ${statistics.topFive}" style="display:flex;align-items:center;gap:12px">
+          <div th:replace="~{fragments/mood-icon :: moodIcon(${meal.moodScore})}"></div>
+          <div>
+            <strong th:text="${iter.count} + '. ' + ${meal.mealType}"></strong>
+            <span th:text="' — ' + ${#temporals.format(meal.eatenAt, 'dd MMM yyyy')}"></span>
+            <span th:if="${meal.moodScore != null}" th:text="' · Mood ' + ${meal.moodScore} + ' · Energy ' + ${meal.energyScore}"></span>
+            <span th:text="' · Cal ' + ${meal.totalCalories}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-section" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+      <div class="report-block" th:each="meal : ${statistics.allMeals}">
+        <div class="default-label-box"><p th:text="${meal.mealType}">Meal</p></div>
+        <div class="report-information-entry">
+          <p>Calories</p>
+          <p th:text="${meal.totalCalories}"></p>
+        </div>
+        <div class="report-information-entry" th:if="${meal.moodScore != null}">
+          <p>Mood / Energy</p>
+          <p th:text="${meal.moodScore} + ' / ' + ${meal.energyScore}"></p>
+        </div>
+        <div class="report-information-entry">
+          <p>Protein</p>
+          <p th:text="${meal.totalProtein} + 'g'"></p>
+        </div>
+        <a th:href="@{/meals/{id}(id=${meal.id})}" class="link-accent-lilac" style="margin-top:8px;display:inline-block">Details →</a>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

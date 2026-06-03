@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="moodIcon(score)">
+  <img th:if="${score != null and score >= 8}" src="/images/mood/happy.svg" class="mood-emoji" alt="Happy" title="Great mood (8–10)">
+  <img th:if="${score != null and score >= 5 and score < 8}" src="/images/mood/neutral.svg" class="mood-emoji" alt="Neutral" title="Okay mood (5–7)">
+  <img th:if="${score != null and score < 5}" src="/images/mood/sad.svg" class="mood-emoji" alt="Low mood" title="Low mood (1–4)">
+  <img th:if="${score == null}" src="/images/mood/unknown.svg" class="mood-emoji" alt="Not logged" title="Wellness not logged yet">
+</th:block>
+</body>
+</html>

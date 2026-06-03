@@ -31,7 +31,7 @@
   font-weight: 300;
   margin-bottom: 10px;
   display: block;
-  background: radial-gradient(ellipse at top, #746ab0 0%, #a095e6 10%, #faf9f9 20%, #c5bfff 30%, #978ef1 40%, #7871f6 50%, #817cff 60%, #8eafe9 70%, #a1a1ff 80%, #a8a8ff 90%, #6d78f3 100%);
+  background: linear-gradient(135deg, #f5b8d4, #ede9fe, #c4b5fd, #a78bfa);
   background-size: 200%;
   background-clip: text;
   -webkit-background-clip: text;
@@ -65,7 +65,7 @@
 }
 
 .func-block a:hover {
-  background: radial-gradient(circle at 90% top, #746ab0 0%, #6a61a4 10%, #605899 20%, #56508d 30%, #4c477f 40%, #423f73 50%, #383666 60%, #2e2d5a 70%, #24244d 80%, #1a1a41 90%, #101035 100%);
+  background: linear-gradient(135deg, #f5b8d4, #c4b5fd);
   color: white;
   font-size: 14px;
   font-weight: 300;
@@ -74,7 +74,7 @@
 }
 
 .func-block a.active {
-  background: radial-gradient(circle at 90% top, #746ab0 0%, #6a61a4 10%, #605899 20%, #56508d 30%, #4c477f 40%, #423f73 50%, #383666 60%, #2e2d5a 70%, #24244d 80%, #1a1a41 90%, #101035 100%);
+  background: linear-gradient(135deg, #e891b8, #a78bfa);
   color: white;
   font-weight: 300;
 }
@@ -107,7 +107,7 @@
   display: flex;
   padding: 20px 0;
   width: 100%;
-  background: radial-gradient(ellipse at top, #746ab0 0%, #a095e6 10%, #faf9f9 20%, #c5bfff 30%, #978ef1 40%, #7871f6 50%, #817cff 60%, #8eafe9 70%, #a1a1ff 80%, #a8a8ff 90%, #6d78f3 100%);
+  background: linear-gradient(135deg, #f5b8d4, #ede9fe, #c4b5fd, #a78bfa);
   background-size: 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

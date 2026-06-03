@@ -7,8 +7,8 @@
 .report-block {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(145deg, #ffffff, #f2f3f5);
-  border: 1px solid #d9dce0;
+  background: linear-gradient(145deg, #ffffff, #fdf5ff);
+  border: 1px solid rgba(196, 181, 253, 0.35);
   border-radius: 16px;
   display: flex;
   flex-direction: column;
@@ -38,7 +38,7 @@
 .report-block.first-report-block::before {
   width: 350px;
   height: 190px;
-  background: radial-gradient(circle, #ff60d745, #679fff);
+  background: radial-gradient(circle, rgba(245, 184, 212, 0.5), rgba(167, 139, 250, 0.45));
   top: -90px;
   left: -100px;
 }
