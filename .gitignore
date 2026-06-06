@@ -18,7 +18,7 @@ build/
 HELP.md
 
 # Local secrets and environment-specific config
-application.properties
+*.properties
 .env
 .env.*
 !.env.example
