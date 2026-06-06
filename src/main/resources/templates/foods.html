@@ -21,19 +21,19 @@
   <div class="home-section foods-grid">
     <div class="foods-page-header">
       <h2 style="margin:0;color:var(--journal-lilac-dark)">Your food library</h2>
-      <p style="color:var(--journal-text-soft);margin:8px 0 0">Pizza, doner, poke bowls, veggies — add what you eat.</p>
+      <p style="color:var(--journal-text-soft);margin:8px 0 0">Begin Your Food Journey.</p>
       <div class="foods-gallery-preview">
         <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=150&h=150&fit=crop" alt="Pizza" title="Pizza">
-        <img src="https://images.unsplash.com/photo-1529006557810-274dba974562?w=150&h=150&fit=crop" alt="Doner" title="Doner">
-        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=150&h=150&fit=crop" alt="Poke" title="Poke bowl">
+        <img src="/images/food/doner.jpg" alt="Doner" title="Doner">
         <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=150&h=150&fit=crop" alt="Veggies" title="Vegetables">
-        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&h=150&fit=crop" alt="Bowl" title="Healthy bowl">
+        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=150&h=150&fit=crop" alt="Poke bowl" title="Poke bowl · balanced">
+        <img src="/images/food/chicken-breast.jpg" alt="Chicken breast" title="Chicken breast · high protein">
       </div>
     </div>
     <div class="empty-state" th:if="${#lists.isEmpty(foods)}">
       <img src="/images/mood/happy.svg" class="mood-emoji-lg" alt="">
       <h2>No foods yet</h2>
-      <p>Add pizza, salad, or your favourites to start logging meals.</p>
+      <p>Add what you eat and track your nutrition.</p>
     </div>
     <div class="food-card-block" th:each="food : ${foods}">
       <h3 th:text="${food.name}">Food</h3>

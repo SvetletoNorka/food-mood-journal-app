@@ -19,7 +19,7 @@
   <div class="nav-bar">
     <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
   </div>
-  <div class="home-section" style="display:flex;flex-direction:column;gap:24px;width:100%">
+  <div class="statistics-layout">
     <div class="statistics-header">
       <div class="statistics-summary">
         <div class="stat-summary-card">
@@ -45,11 +45,11 @@
       </form>
     </div>
 
-    <div class="report-block stat-block-mood first-report-block" style="height:auto;min-height:200px">
+    <div class="report-block stat-block-mood first-report-block">
       <div class="default-label-box"><p>Top 5 meals</p></div>
-      <div class="top-meals-list" style="width:100%">
+      <div class="top-meals-list">
         <p th:if="${#lists.isEmpty(statistics.topFive)}" style="color:#666">Log meals with wellness scores to see rankings.</p>
-        <div class="top-meal-item" th:each="meal, iter : ${statistics.topFive}" style="display:flex;align-items:center;gap:12px">
+        <div class="top-meal-item" th:each="meal, iter : ${statistics.topFive}">
           <div th:replace="~{fragments/mood-icon :: moodIcon(${meal.moodScore})}"></div>
           <div>
             <strong th:text="${iter.count} + '. ' + ${meal.mealType}"></strong>
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="home-section" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+    <div class="statistics-meals-grid">
       <div class="report-block" th:each="meal : ${statistics.allMeals}">
         <div class="default-label-box"><p th:text="${meal.mealType}">Meal</p></div>
         <div class="report-information-entry">
