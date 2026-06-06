@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Tired mood">
+  <circle cx="32" cy="32" r="30" fill="#ddd6fe" stroke="#8b6fd4" stroke-width="2"/>
+  <path d="M16 30 Q22 23 28 30" fill="none" stroke="#6d5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="22" cy="25" r="2.5" fill="#6d5aaa"/>
+  <path d="M36 30 Q42 23 48 30" fill="none" stroke="#6d5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="42" cy="25" r="2.5" fill="#6d5aaa"/>
+  <path d="M24 44 H40" fill="none" stroke="#6d5aaa" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="44" y="15" font-size="8" fill="#8b6fd4" font-family="sans-serif" font-weight="600">z</text>
+  <text x="49" y="10" font-size="10" fill="#8b6fd4" font-family="sans-serif" font-weight="600">z</text>
+  <text x="54" y="5" font-size="12" fill="#a78bfa" font-family="sans-serif" font-weight="700">Z</text>
+</svg>
