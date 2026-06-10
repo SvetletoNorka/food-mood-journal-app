@@ -52,6 +52,12 @@ spring.datasource.password=YOUR_PASSWORD
 
 The database is created automatically on first run (`createDatabaseIfNotExist=true`).
 
+Optional Spring profiles are available in `application-dev.properties` and `application-prod.properties`. Activate one with:
+
+```bash
+.\mvnw.cmd spring-boot:run -Dspring-boot.run.profiles=dev
+```
+
 ### 2. Build and run
 
 ```bash
