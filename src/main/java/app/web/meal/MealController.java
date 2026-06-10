@@ -1,13 +1,11 @@
 package app.web.meal;
 
-import app.config.UserSession;
-import app.model.dto.food.FoodDto;
 import app.model.dto.meal.CreateMealRequest;
 import app.model.dto.meal.MealEntryRequest;
 import app.model.dto.meal.WellnessLogRequest;
 import app.service.food.FoodService;
 import app.service.meal.MealService;
-import app.web.SessionGuard;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -25,81 +23,65 @@ public class MealController {
 
     private final MealService mealService;
     private final FoodService foodService;
-    private final UserSession userSession;
 
-    public MealController(MealService mealService, FoodService foodService, UserSession userSession) {
+    public MealController(MealService mealService, FoodService foodService) {
         this.mealService = mealService;
         this.foodService = foodService;
-        this.userSession = userSession;
     }
 
     @GetMapping
-    public ModelAndView listMeals() {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+    public ModelAndView listMeals(HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
 
         ModelAndView modelAndView = new ModelAndView("meals");
-        modelAndView.addObject("meals", mealService.findAllForUser(userSession.getId()));
+        modelAndView.addObject("meals", mealService.findAllForUser(userId));
         modelAndView.addObject("activePage", "meals");
         return modelAndView;
     }
 
     @GetMapping("/new")
-    public ModelAndView newMealForm() {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+    public ModelAndView newMealForm(HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
 
         ModelAndView modelAndView = new ModelAndView("meal-form");
         modelAndView.addObject("createMealRequest", defaultCreateMealRequest());
-        modelAndView.addObject("foods", foodService.findAllForUser(userSession.getId()));
+        modelAndView.addObject("foods", foodService.findAllForUser(userId));
         modelAndView.addObject("activePage", "meals");
         return modelAndView;
     }
 
     @PostMapping
     public ModelAndView createMeal(@Valid @ModelAttribute("createMealRequest") CreateMealRequest createMealRequest,
-                                 BindingResult bindingResult) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+                                     BindingResult bindingResult,
+                                     HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("meal-form");
-            modelAndView.addObject("foods", foodService.findAllForUser(userSession.getId()));
+            modelAndView.addObject("foods", foodService.findAllForUser(userId));
             modelAndView.addObject("activePage", "meals");
             return modelAndView;
         }
 
-        UUID mealId = mealService.create(userSession.getId(), createMealRequest).getId();
+        UUID mealId = mealService.create(userId, createMealRequest).getId();
         return new ModelAndView("redirect:/meals/" + mealId);
     }
 
     @GetMapping("/{id}")
-    public ModelAndView mealDetails(@PathVariable UUID id) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+    public ModelAndView mealDetails(@PathVariable UUID id, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
 
         ModelAndView modelAndView = new ModelAndView("meal-details");
-        modelAndView.addObject("meal", mealService.findById(userSession.getId(), id));
+        modelAndView.addObject("meal", mealService.findById(userId, id));
         modelAndView.addObject("activePage", "meals");
         return modelAndView;
     }
 
     @GetMapping("/{id}/wellness")
-    public ModelAndView wellnessForm(@PathVariable UUID id) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+    public ModelAndView wellnessForm(@PathVariable UUID id, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+        var meal = mealService.findById(userId, id);
 
-        var meal = mealService.findById(userSession.getId(), id);
         WellnessLogRequest wellnessLogRequest = WellnessLogRequest.builder()
                 .moodScore(meal.getMoodScore() != null ? meal.getMoodScore() : 5)
                 .energyScore(meal.getEnergyScore() != null ? meal.getEnergyScore() : 5)
@@ -117,21 +99,19 @@ public class MealController {
     @PostMapping("/{id}/wellness")
     public ModelAndView saveWellness(@PathVariable UUID id,
                                      @Valid @ModelAttribute("wellnessLogRequest") WellnessLogRequest wellnessLogRequest,
-                                     BindingResult bindingResult) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+                                     BindingResult bindingResult,
+                                     HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("meal-wellness");
             modelAndView.addObject("mealId", id);
-            modelAndView.addObject("meal", mealService.findById(userSession.getId(), id));
+            modelAndView.addObject("meal", mealService.findById(userId, id));
             modelAndView.addObject("activePage", "meals");
             return modelAndView;
         }
 
-        mealService.saveWellnessLog(userSession.getId(), id, wellnessLogRequest);
+        mealService.saveWellnessLog(userId, id, wellnessLogRequest);
         return new ModelAndView("redirect:/meals/" + id);
     }
 

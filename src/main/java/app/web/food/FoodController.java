@@ -1,11 +1,10 @@
 package app.web.food;
 
-import app.config.UserSession;
 import app.model.dto.food.CreateFoodRequest;
 import app.model.dto.food.EditFoodRequest;
 import app.model.dto.food.FoodDto;
 import app.service.food.FoodService;
-import app.web.SessionGuard;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,33 +18,23 @@ import java.util.UUID;
 public class FoodController {
 
     private final FoodService foodService;
-    private final UserSession userSession;
 
-    public FoodController(FoodService foodService, UserSession userSession) {
+    public FoodController(FoodService foodService) {
         this.foodService = foodService;
-        this.userSession = userSession;
     }
 
     @GetMapping
-    public ModelAndView listFoods() {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+    public ModelAndView listFoods(HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
 
         ModelAndView modelAndView = new ModelAndView("foods");
-        modelAndView.addObject("foods", foodService.findAllForUser(userSession.getId()));
+        modelAndView.addObject("foods", foodService.findAllForUser(userId));
         modelAndView.addObject("activePage", "foods");
         return modelAndView;
     }
 
     @GetMapping("/new")
     public ModelAndView newFoodForm() {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
-
         ModelAndView modelAndView = new ModelAndView("food-form");
         modelAndView.addObject("createFoodRequest", CreateFoodRequest.builder().build());
         modelAndView.addObject("activePage", "foods");
@@ -55,11 +44,9 @@ public class FoodController {
 
     @PostMapping
     public ModelAndView createFood(@Valid @ModelAttribute("createFoodRequest") CreateFoodRequest createFoodRequest,
-                                 BindingResult bindingResult) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+                                   BindingResult bindingResult,
+                                   HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("food-form");
@@ -68,18 +55,15 @@ public class FoodController {
             return modelAndView;
         }
 
-        foodService.create(userSession.getId(), createFoodRequest);
+        foodService.create(userId, createFoodRequest);
         return new ModelAndView("redirect:/foods");
     }
 
     @GetMapping("/{id}/edit")
-    public ModelAndView editFoodForm(@PathVariable UUID id) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+    public ModelAndView editFoodForm(@PathVariable UUID id, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+        FoodDto food = foodService.findById(userId, id);
 
-        FoodDto food = foodService.findById(userSession.getId(), id);
         EditFoodRequest editFoodRequest = EditFoodRequest.builder()
                 .name(food.getName())
                 .caloriesPer100g(food.getCaloriesPer100g())
@@ -99,12 +83,8 @@ public class FoodController {
     @PostMapping("/{id}")
     public ModelAndView updateFood(@PathVariable UUID id,
                                    @Valid @ModelAttribute("editFoodRequest") EditFoodRequest editFoodRequest,
-                                   BindingResult bindingResult) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
-
+                                   BindingResult bindingResult,
+                                   HttpSession session) {
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("food-form");
             modelAndView.addObject("foodId", id);
@@ -113,18 +93,15 @@ public class FoodController {
             return modelAndView;
         }
 
-        foodService.update(userSession.getId(), id, editFoodRequest);
+        UUID userId = (UUID) session.getAttribute("user_id");
+        foodService.update(userId, id, editFoodRequest);
         return new ModelAndView("redirect:/foods");
     }
 
     @PostMapping("/{id}/delete")
-    public ModelAndView deleteFood(@PathVariable UUID id) {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
-
-        foodService.delete(userSession.getId(), id);
+    public ModelAndView deleteFood(@PathVariable UUID id, HttpSession session) {
+        UUID userId = (UUID) session.getAttribute("user_id");
+        foodService.delete(userId, id);
         return new ModelAndView("redirect:/foods");
     }
 }

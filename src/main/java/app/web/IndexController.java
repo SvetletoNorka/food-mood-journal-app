@@ -1,10 +1,10 @@
 package app.web;
 
-import app.config.UserSession;
 import app.model.dto.user.UserDto;
 import app.model.dto.user.UserLoginRequest;
 import app.model.dto.user.UserRegisterRequest;
 import app.service.user.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.UUID;
+
 @Controller
 public class IndexController {
 
     private final UserService userService;
-    private final UserSession userSession;
 
-    public IndexController(UserService userService, UserSession userSession) {
+    public IndexController(UserService userService) {
         this.userService = userService;
-        this.userSession = userSession;
     }
 
     @GetMapping("/")
@@ -30,8 +30,8 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage() {
-        if (userSession.isLoggedIn()) {
+    public ModelAndView getLoginPage(HttpSession httpSession) {
+        if (isLoggedIn(httpSession)) {
             return new ModelAndView("redirect:/home");
         }
 
@@ -42,14 +42,15 @@ public class IndexController {
 
     @PostMapping("/login")
     public ModelAndView login(@Valid @ModelAttribute("userLoginRequest") UserLoginRequest userLoginRequest,
-                              BindingResult bindingResult) {
+                              BindingResult bindingResult,
+                              HttpSession httpSession) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("login");
         }
 
         try {
             UserDto user = userService.login(userLoginRequest);
-            userSession.login(user.getId(), user.getUsername());
+            httpSession.setAttribute("user_id", user.getId());
             return new ModelAndView("redirect:/home");
         } catch (RuntimeException ex) {
             ModelAndView modelAndView = new ModelAndView("login");
@@ -59,8 +60,8 @@ public class IndexController {
     }
 
     @GetMapping("/register")
-    public ModelAndView getRegisterPage() {
-        if (userSession.isLoggedIn()) {
+    public ModelAndView getRegisterPage(HttpSession httpSession) {
+        if (isLoggedIn(httpSession)) {
             return new ModelAndView("redirect:/home");
         }
 
@@ -87,13 +88,10 @@ public class IndexController {
     }
 
     @GetMapping("/home")
-    public ModelAndView getHomePage() {
-        ModelAndView redirect = SessionGuard.redirectToLoginIfNeeded(userSession);
-        if (redirect != null) {
-            return redirect;
-        }
+    public ModelAndView getHomePage(HttpSession httpSession) {
+        UUID userId = (UUID) httpSession.getAttribute("user_id");
+        UserDto user = userService.findById(userId);
 
-        UserDto user = userService.findById(userSession.getId());
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("user", user);
         modelAndView.addObject("activePage", "home");
@@ -101,8 +99,12 @@ public class IndexController {
     }
 
     @GetMapping("/logout")
-    public ModelAndView logout() {
-        userSession.logout();
+    public ModelAndView logout(HttpSession httpSession) {
+        httpSession.invalidate();
         return new ModelAndView("redirect:/");
+    }
+
+    private boolean isLoggedIn(HttpSession httpSession) {
+        return httpSession != null && httpSession.getAttribute("user_id") != null;
     }
 }
