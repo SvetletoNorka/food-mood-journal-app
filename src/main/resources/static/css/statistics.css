@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 100%;
   height: auto;
   align-self: stretch;
 }
@@ -11,7 +10,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
-  width: 100%;
+  min-width: 0;
   height: auto;
 }
 
@@ -72,9 +71,9 @@
   position: relative;
   height: auto;
   min-height: 200px;
-  overflow: visible;
+  overflow: hidden;
   align-items: stretch;
-  width: 100%;
+  min-width: 0;
   flex-shrink: 0;
 }
 
@@ -96,6 +95,26 @@
   padding: 16px 20px;
   border-left: 4px solid var(--journal-pink-deep);
   color: #333;
+  min-width: 0;
+}
+
+.top-meal-item > div:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.statistics-meals-grid .report-block {
+  height: auto;
+  min-height: 200px;
+  min-width: 0;
+}
+
+.statistics-meals-grid .report-information-entry p:first-child {
+  margin-left: 0;
+}
+
+.statistics-meals-grid .report-information-entry p:last-child {
+  margin-right: 0;
 }
 
 .report-block.stat-block-mood::before {
