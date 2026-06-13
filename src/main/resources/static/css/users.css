@@ -13,6 +13,23 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
+.users-table-container .styled-table thead {
+  background: linear-gradient(
+    135deg,
+    var(--journal-pink-deep) 0%,
+    var(--journal-lilac-mid) 50%,
+    var(--journal-lilac-deep) 100%
+  );
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.users-table-container .styled-table thead th {
+  border-bottom: none;
+  letter-spacing: 0.04em;
+}
+
 .users-table-container .status.active,
 .users-table-container .status.terminated {
   background-color: #e0f7e9;
