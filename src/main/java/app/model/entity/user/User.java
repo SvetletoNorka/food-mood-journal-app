@@ -37,6 +37,10 @@ public class User {
     private UserRole role;
 
     @Column(nullable = false)
+    @Builder.Default
+    private boolean isActive = true;
+
+    @Column(nullable = false)
     private LocalDateTime createdOn;
 
     @Column(nullable = false)

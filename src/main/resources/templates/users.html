@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" href="/css/home-common.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/subscription-history.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
+  <link rel="stylesheet" href="/css/users.css">
+  <title>Users</title>
+</head>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
+<main>
+  <div class="nav-bar">
+    <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
+  </div>
+  <div class="home-section users-section">
+    <div class="single-section-box subscriptions-container users-table-container">
+      <table class="styled-table">
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Created on</th>
+          <th>Switch status</th>
+          <th>Switch role</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+          <td th:text="${user.id}"></td>
+          <td th:text="${user.username}"></td>
+          <td th:text="${user.email}"></td>
+          <td th:text="${user.role}"></td>
+          <td>
+            <p th:if="${user.isActive}" class="status active">Active</p>
+            <p th:unless="${user.isActive}" class="status terminated">Inactive</p>
+          </td>
+          <td th:text="${#temporals.format(user.createdOn, 'dd MMM yyyy HH:mm')}"></td>
+          <td>
+            <form th:action="@{/users/{id}/status(id=${user.id})}" th:method="PUT">
+              <button type="submit" class="profile-actions-button">
+                <p>Switch</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                     viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"></path>
+                </svg>
+              </button>
+            </form>
+          </td>
+          <td>
+            <form th:action="@{/users/{id}/role(id=${user.id})}" th:method="PUT">
+              <button type="submit" class="profile-actions-button">
+                <p>Role</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                     viewBox="0 0 16 16" aria-hidden="true">
+                  <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"></path>
+                </svg>
+              </button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

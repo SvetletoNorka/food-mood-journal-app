@@ -1,5 +1,7 @@
 package app.security;
 
+import app.model.dto.user.UserDto;
+import app.model.entity.user.UserRole;
 import app.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -45,8 +47,26 @@ public class SessionInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        userService.findById(userId);
+        UserDto user = userService.findById(userId);
+
+        if (!user.isActive()) {
+            session.invalidate();
+            response.sendRedirect("/login");
+            return false;
+        }
+
+        if (isAdminUsersEndpoint(endpoint) && user.getRole() != UserRole.ADMIN) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("You do not have permission to access this resource.");
+            return false;
+        }
 
         return true;
+    }
+
+    private boolean isAdminUsersEndpoint(String endpoint) {
+        return endpoint.equals("/users")
+                || endpoint.matches("/users/.+/status")
+                || endpoint.matches("/users/.+/role");
     }
 }

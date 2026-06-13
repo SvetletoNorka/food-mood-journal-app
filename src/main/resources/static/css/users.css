@@ -1,0 +1,39 @@
+.users-section {
+  grid-template-columns: 1fr;
+  min-width: 0;
+}
+
+.users-table-container {
+  z-index: 2;
+}
+
+.users-table-container .styled-table {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.users-table-container .status.active,
+.users-table-container .status.terminated {
+  background-color: #e0f7e9;
+  color: #2e7d32;
+  border: 1px solid rgba(84, 227, 54, 0.6);
+  box-shadow: 0 4px 8px rgba(0, 153, 51, 0.15);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.users-table-container .status.terminated {
+  background-color: #fbe9e7;
+  color: #c62828;
+  border: 1px solid rgba(255, 103, 103, 0.6);
+  box-shadow: 0 4px 8px rgba(255, 103, 103, 0.2);
+}
+
+.users-table-container form {
+  display: inline;
+}
+
+.users-table-container .profile-actions-button {
+  margin: 0;
+}
