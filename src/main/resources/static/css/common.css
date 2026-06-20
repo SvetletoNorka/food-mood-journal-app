@@ -3,6 +3,11 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   background-size: cover;
@@ -24,10 +29,23 @@ body {
   letter-spacing: 0.5px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .header {
+  flex-shrink: 0;
   padding: 2% 6%;
 }
 
@@ -90,6 +108,11 @@ body {
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.footer p {
+  margin: 8px 0;
 }
 
 .alert-warning {

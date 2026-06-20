@@ -15,11 +15,20 @@ body {
   border-radius: 6px;}
 
 body main {
-  margin: 20px 20px 0;
+  margin: 0;
+  padding: 20px 20px 0;
   display: flex;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: stretch;
   gap: 26px;
   min-width: 0;
+  flex: 1;
+  min-height: 0;
+}
+
+body main .nav-bar {
+  flex-shrink: 0;
+  align-self: stretch;
 }
 
 body main > :not(.nav-bar) {
@@ -35,11 +44,10 @@ body main > :not(.nav-bar) {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-column-gap: 26px;
-  grid-row-gap: 26px;
-  grid-template-columns: repeat(2, 50%);
+  gap: 26px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   color: #333333;
-  margin-right: 2%;
+  min-width: 0;
 }
 
 div.single-section-box {
@@ -50,7 +58,7 @@ div.single-section-box {
   border: 1px solid transparent;
   color: #333333;
   text-align: center;
-  min-width: 300px;
+  min-width: 0;
 }
 
 .profile-status-role-container {
