@@ -2,8 +2,6 @@
 
 A web application for tracking food intake and mood after meals. Users can log foods, meals, and wellness scores to discover which foods make them feel their best.
 
-> Project from the SoftUni **Spring Fundamentals** course.
-
 ## Description
 
 **Food Mood Journal** connects food logging with how you feel after eating. The idea is simple: record what you ate, rate your mood and energy, and let the app help you spot patterns between diet and well-being.
