@@ -19,6 +19,17 @@ A web application for tracking food intake and mood after meals. Users can log f
 - Post-meal wellness log (mood score, energy score, notes)
 - Statistics and reports
 
+## Screenshots
+<img width="1908" height="965" alt="Screenshot 2026-06-20 163609" src="https://github.com/user-attachments/assets/e4683c15-cf93-4926-9f88-9b7d87ba2719" />
+<img width="1911" height="962" alt="Screenshot 2026-06-20 165904" src="https://github.com/user-attachments/assets/c510e30c-bfae-4eef-b7f4-c9984bc0b4eb" />
+<img width="1895" height="961" alt="Screenshot 2026-06-20 165845" src="https://github.com/user-attachments/assets/8338a464-0211-41da-b589-c6c565ec8766" />
+<img width="1917" height="967" alt="Screenshot 2026-06-20 165454" src="https://github.com/user-attachments/assets/ca9b64bc-6fcb-443b-9d1e-d99f6dd773bd" />
+<img width="1912" height="971" alt="Screenshot 2026-06-20 165517" src="https://github.com/user-attachments/assets/2c880adc-bf5d-4fdc-a027-51994b1e129e" />
+<img width="1891" height="959" alt="Screenshot 2026-06-20 165535" src="https://github.com/user-attachments/assets/d90168ae-81cf-4e50-adf5-1567bc191f09" />
+<img width="1891" height="950" alt="Screenshot 2026-06-20 165557" src="https://github.com/user-attachments/assets/6fd11488-6c2c-4957-a6d4-0090ef5b2952" />
+<img width="1920" height="1080" alt="Screenshot (2)" src="https://github.com/user-attachments/assets/48b8cf9b-3ec1-44f5-90f1-a510f032902f" />
+<img width="1909" height="969" alt="Screenshot 2026-06-20 165701" src="https://github.com/user-attachments/assets/1fd912fb-04b6-4b4a-b064-0b97a4af3187" />
+
 ## Tech Stack
 
 | Category | Technology |
@@ -108,6 +119,7 @@ The application is available at: **http://localhost:8080**
 | GET | `/users` | User list (admin only) |
 | PUT | `/users/{id}/status` | Toggle user status (admin only) |
 | PUT | `/users/{id}/role` | Toggle user role (admin only) |
+
 
 ## Data Model
 
