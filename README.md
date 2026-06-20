@@ -92,38 +92,70 @@ The application is available at: **http://localhost:8080**
 | POST | `/register` | User registration |
 | GET | `/home` | Dashboard (requires login) |
 | GET | `/logout` | Logout |
+| GET | `/foods` | Food list (requires login) |
+| GET | `/foods/new` | New food form (requires login) |
+| POST | `/foods` | Create food (requires login) |
+| GET | `/foods/{id}/edit` | Edit food form (requires login) |
+| POST | `/foods/{id}` | Update food (requires login) |
+| POST | `/foods/{id}/delete` | Delete food (requires login) |
+| GET | `/meals` | Meal list (requires login) |
+| GET | `/meals/new` | New meal form (requires login) |
+| POST | `/meals` | Create meal (requires login) |
+| GET | `/meals/{id}` | Meal details (requires login) |
+| GET | `/meals/{id}/wellness` | Wellness log form (requires login) |
+| POST | `/meals/{id}/wellness` | Save wellness log (requires login) |
+| GET | `/statistics` | Statistics page (requires login) |
+| GET | `/users` | User list (admin only) |
+| PUT | `/users/{id}/status` | Toggle user status (admin only) |
+| PUT | `/users/{id}/role` | Toggle user role (admin only) |
 
 ## Data Model
 
 ```
 User
- ├── Food (calories, protein, fat, carbs per 100g)
- └── Meal (type: BREAKFAST, LUNCH, DINNER, SNACK)
-      ├── MealEntry (quantity in grams + Food reference)
-      └── WellnessLog (moodScore, energyScore, notes)
+ ├── Food
+ └── Meal
+      ├── MealEntry → Food
+      └── WellnessLog (OneToOne)
 ```
 
-### User Roles
+### Entities
 
-- `USER` — standard user
-- `ADMIN` — administrator role (defined in the model)
+| Entity | Fields |
+|--------|--------|
+| **User** | `username`, `email`, `password`, `role`, `isActive`, `createdOn`, `updatedOn` |
+| **Food** | `name`, `caloriesPer100g`, `proteinPer100g`, `fatPer100g`, `carbsPer100g`, `owner` |
+| **Meal** | `mealType`, `eatenAt`, `owner`, `entries`, `wellnessLog` |
+| **MealEntry** | `quantityInGrams`, `meal`, `food` |
+| **WellnessLog** | `moodScore`, `energyScore`, `notes`, `createdAt`, `meal` |
+
+### Enums
+
+| Enum | Values |
+|------|--------|
+| **UserRole** | `USER`, `ADMIN` |
+| **MealType** | `BREAKFAST`, `LUNCH`, `DINNER`, `SNACK` |
 
 ## Project Structure
 
 ```
 src/main/java/app/
-├── config/          # Bean configuration, UserSession
-├── mapper/          # Entity ↔ DTO mapping
+├── config/              # BeanConfiguration, WebMvcConfiguration
+├── mapper/              # Entity ↔ DTO mapping (food, meal, user)
 ├── model/
-│   ├── dto/         # Request/response objects
-│   └── entity/      # JPA entities
-├── repository/      # Spring Data repositories
-├── service/         # Business logic
-└── web/             # MVC controllers
+│   ├── dto/             # Request/response objects
+│   └── entity/          # JPA entities (food, meal, user)
+├── repository/          # Spring Data repositories
+├── security/            # SessionInterceptor (auth guard)
+├── service/             # Business logic (food, meal, statistics, user)
+└── web/                 # MVC controllers (food, meal, statistics, user)
 
 src/main/resources/
-├── static/css/      # Stylesheets
-├── templates/       # Thymeleaf HTML templates
+├── static/
+│   ├── css/             # Stylesheets
+│   └── images/          # Logo, mood icons, food images
+├── templates/
+│   └── fragments/       # Reusable Thymeleaf partials
 └── application.properties
 ```
 
