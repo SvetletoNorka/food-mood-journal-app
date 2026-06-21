@@ -157,27 +157,32 @@ User
 ```
 src/main/java/app/
 ├── config/              # BeanConfiguration, WebMvcConfiguration
+├── exception/           # Custom domain exceptions (FoodNotFoundException, etc.)
 ├── mapper/              # Entity ↔ DTO mapping (food, meal, user)
 ├── model/
 │   ├── dto/             # Request/response objects
 │   └── entity/          # JPA entities (food, meal, user)
-├── repository/          # Spring Data repositories
+├── repository/          # Spring Data JPA (User, Food, Meal)
 ├── security/            # SessionInterceptor (auth guard)
 ├── service/             # Business logic (food, meal, statistics, user)
-└── web/                 # MVC controllers (food, meal, statistics, user)
+└── web/                 # MVC controllers + GlobalExceptionHandler, UserModelAdvice
 
 src/main/resources/
 ├── static/
-│   ├── css/             # Stylesheets
+│   ├── css/             # Page stylesheets
 │   └── images/          # Logo, mood icons, food images
 ├── templates/
-│   └── fragments/       # Reusable Thymeleaf partials
-└── application.properties
+│   ├── fragments/       # sidebar, background-decor, mood-icon
+│   ├── error.html       # Custom error page
+│   └── *.html           # Thymeleaf views (home, foods, meals, etc.)
+├── application.properties
+├── application-dev.properties
+└── application-prod.properties
 ```
 
 ## Authentication
 
-The application uses **session-based authentication** via `SessionInterceptor` and `HttpSession` (stores `user_id` on login). Passwords are stored hashed using `BCryptPasswordEncoder`.
+The application uses **session-based authentication** via `SessionInterceptor` and `HttpSession` (stores `user_id` on login). Passwords are stored hashed using `BCryptPasswordEncoder`. Domain exceptions are handled by `GlobalExceptionHandler` and displayed on `error.html`. Login and register errors are shown on the form.
 
 ## License
 
