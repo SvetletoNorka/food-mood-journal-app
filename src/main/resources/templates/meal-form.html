@@ -42,11 +42,21 @@
         <h3 style="margin-top:20px">Foods in this meal</h3>
         <div id="entries-container">
           <div class="meal-entry-row" th:each="entry, stat : *{entries}">
-            <select th:field="*{entries[__${stat.index}__].foodId}">
-              <option value="">— Select food —</option>
-              <option th:each="food : ${foods}" th:value="${food.id}" th:text="${food.name}"></option>
-            </select>
-            <input type="number" min="1" placeholder="Grams" th:field="*{entries[__${stat.index}__].quantityInGrams}">
+            <div class="meal-entry-field">
+              <select th:field="*{entries[__${stat.index}__].foodId}">
+                <option value="">— Select food —</option>
+                <option th:each="food : ${foods}" th:value="${food.id}" th:text="${food.name}"></option>
+              </select>
+              <p class="alert-warning entry-field-error"
+                 th:if="${#fields.hasErrors('entries[' + stat.index + '].foodId')}"
+                 th:errors="*{entries[__${stat.index}__].foodId}"></p>
+            </div>
+            <div class="meal-entry-field">
+              <input type="number" min="1" placeholder="Grams" th:field="*{entries[__${stat.index}__].quantityInGrams}">
+              <p class="alert-warning entry-field-error"
+                 th:if="${#fields.hasErrors('entries[' + stat.index + '].quantityInGrams')}"
+                 th:errors="*{entries[__${stat.index}__].quantityInGrams}"></p>
+            </div>
             <button type="button" class="btn-delete remove-entry" th:if="${stat.index > 0}">×</button>
           </div>
         </div>

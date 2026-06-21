@@ -14,6 +14,7 @@ public class MealEntryRequest {
     @NotNull(message = "Food is required")
     private UUID foodId;
 
+    @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1 gram")
-    private int quantityInGrams;
+    private Integer quantityInGrams;
 }

@@ -58,6 +58,7 @@ public class MealController {
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("meal-form");
+            modelAndView.addObject("createMealRequest", createMealRequest);
             modelAndView.addObject("foods", foodService.findAllForUser(userId));
             modelAndView.addObject("activePage", "meals");
             return modelAndView;
