@@ -10,7 +10,7 @@ A web application for tracking food intake and mood after meals. Users can log f
 
 - User registration (username, email, password)
 - Login and logout
-- Session-based authentication (`UserSession`)
+- Session-based authentication (`SessionInterceptor` + `HttpSession`, stores `user_id`)
 - Password hashing (BCrypt)
 - Landing, login, and register pages
 - Protected home page with user profile
@@ -126,20 +126,24 @@ The application is available at: **http://localhost:8080**
 ```
 User
  ├── Food
- └── Meal
+ └── Meal (aggregate root)
       ├── MealEntry → Food
       └── WellnessLog (OneToOne)
 ```
 
+**Domain entities** (`User`, `Food`, `Meal`) each have a dedicated JPA repository and service.
+
+**Child entities** (`MealEntry`, `WellnessLog`) belong to the `Meal` aggregate. They are persisted and updated through `MealRepository` and `MealService` via JPA cascade — no separate repository or service.
+
 ### Entities
 
-| Entity | Fields |
-|--------|--------|
-| **User** | `username`, `email`, `password`, `role`, `isActive`, `createdOn`, `updatedOn` |
-| **Food** | `name`, `caloriesPer100g`, `proteinPer100g`, `fatPer100g`, `carbsPer100g`, `owner` |
-| **Meal** | `mealType`, `eatenAt`, `owner`, `entries`, `wellnessLog` |
-| **MealEntry** | `quantityInGrams`, `meal`, `food` |
-| **WellnessLog** | `moodScore`, `energyScore`, `notes`, `createdAt`, `meal` |
+| Entity | Type | Fields |
+|--------|------|--------|
+| **User** | Domain | `username`, `email`, `password`, `role`, `isActive`, `createdOn`, `updatedOn` |
+| **Food** | Domain | `name`, `caloriesPer100g`, `proteinPer100g`, `fatPer100g`, `carbsPer100g`, `owner` |
+| **Meal** | Domain | `mealType`, `eatenAt`, `owner`, `entries`, `wellnessLog` |
+| **MealEntry** | Child of Meal | `quantityInGrams`, `meal`, `food` |
+| **WellnessLog** | Child of Meal | `moodScore`, `energyScore`, `notes`, `createdAt`, `meal` |
 
 ### Enums
 
@@ -173,7 +177,7 @@ src/main/resources/
 
 ## Authentication
 
-The application uses **session-based authentication** via the `@SessionScope` `UserSession` component, not a full Spring Security filter chain. Passwords are stored hashed using `BCryptPasswordEncoder`.
+The application uses **session-based authentication** via `SessionInterceptor` and `HttpSession` (stores `user_id` on login). Passwords are stored hashed using `BCryptPasswordEncoder`.
 
 ## License
 
