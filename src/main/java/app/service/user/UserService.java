@@ -1,5 +1,9 @@
 package app.service.user;
 
+import app.exception.DuplicateEmailException;
+import app.exception.DuplicateUsernameException;
+import app.exception.InvalidCredentialsException;
+import app.exception.UserNotFoundException;
 import app.mapper.user.UserMapper;
 import app.model.dto.user.UserDto;
 import app.model.dto.user.UserLoginRequest;
@@ -33,7 +37,7 @@ public class UserService {
 
         if (optionalUser.isEmpty()
                 || !passwordEncoder.matches(request.getPassword(), optionalUser.get().getPassword())) {
-            throw new RuntimeException("Username or password mismatch!");
+            throw new InvalidCredentialsException();
         }
 
         return UserMapper.toUserDto(optionalUser.get());
@@ -42,12 +46,12 @@ public class UserService {
     public UserDto register(UserRegisterRequest request) {
         userRepository.findByUsername(request.getUsername())
                 .ifPresent(user -> {
-                    throw new RuntimeException("User with this username already exists!");
+                    throw new DuplicateUsernameException();
                 });
 
         userRepository.findByEmail(request.getEmail())
                 .ifPresent(user -> {
-                    throw new RuntimeException("User with this email already exists!");
+                    throw new DuplicateEmailException();
                 });
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -58,7 +62,7 @@ public class UserService {
 
     public UserDto findById(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User with id [%s] does not exist.".formatted(id)));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         return UserMapper.toUserDto(user);
     }
@@ -72,7 +76,7 @@ public class UserService {
 
     public void switchStatus(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User with id [%s] does not exist.".formatted(id)));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         user.setActive(!user.isActive());
         user.setUpdatedOn(LocalDateTime.now());
@@ -81,7 +85,7 @@ public class UserService {
 
     public void switchRole(UUID id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User with id [%s] does not exist.".formatted(id)));
+                .orElseThrow(() -> new UserNotFoundException(id));
 
         if (user.getRole() == UserRole.USER) {
             user.setRole(UserRole.ADMIN);

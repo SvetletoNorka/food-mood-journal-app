@@ -1,5 +1,8 @@
 package app.service.meal;
 
+import app.exception.FoodNotFoundException;
+import app.exception.MealNotFoundException;
+import app.exception.UserNotFoundException;
 import app.mapper.meal.MealMapper;
 import app.model.dto.meal.CreateMealRequest;
 import app.model.dto.meal.MealDetailsDto;
@@ -50,7 +53,7 @@ public class MealService {
 
     public MealDetailsDto create(UUID ownerId, CreateMealRequest request) {
         User owner = userRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("User not found."));
+                .orElseThrow(() -> new UserNotFoundException(ownerId));
 
         Meal meal = Meal.builder()
                 .mealType(request.getMealType())
@@ -61,7 +64,7 @@ public class MealService {
 
         for (MealEntryRequest entryRequest : request.getEntries()) {
             Food food = foodRepository.findByIdAndOwnerId(entryRequest.getFoodId(), ownerId)
-                    .orElseThrow(() -> new RuntimeException("Food not found."));
+                    .orElseThrow(FoodNotFoundException::new);
 
             MealEntry entry = MealEntry.builder()
                     .quantityInGrams(entryRequest.getQuantityInGrams())
@@ -99,6 +102,6 @@ public class MealService {
 
     private Meal getOwnedMeal(UUID ownerId, UUID mealId) {
         return mealRepository.findByIdAndOwnerId(mealId, ownerId)
-                .orElseThrow(() -> new RuntimeException("Meal not found."));
+                .orElseThrow(MealNotFoundException::new);
     }
 }

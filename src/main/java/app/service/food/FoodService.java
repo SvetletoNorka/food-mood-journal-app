@@ -1,5 +1,7 @@
 package app.service.food;
 
+import app.exception.FoodNotFoundException;
+import app.exception.UserNotFoundException;
 import app.mapper.food.FoodMapper;
 import app.model.dto.food.CreateFoodRequest;
 import app.model.dto.food.EditFoodRequest;
@@ -56,11 +58,11 @@ public class FoodService {
 
     private Food getOwnedFood(UUID ownerId, UUID foodId) {
         return foodRepository.findByIdAndOwnerId(foodId, ownerId)
-                .orElseThrow(() -> new RuntimeException("Food not found."));
+                .orElseThrow(FoodNotFoundException::new);
     }
 
     private User getOwner(UUID ownerId) {
         return userRepository.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("User not found."));
+                .orElseThrow(() -> new UserNotFoundException(ownerId));
     }
 }

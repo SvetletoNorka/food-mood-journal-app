@@ -1,5 +1,6 @@
 package app.web;
 
+import app.exception.DomainException;
 import app.model.dto.user.UserDto;
 import app.model.dto.user.UserLoginRequest;
 import app.model.dto.user.UserRegisterRequest;
@@ -52,7 +53,7 @@ public class IndexController {
             UserDto user = userService.login(userLoginRequest);
             httpSession.setAttribute("user_id", user.getId());
             return new ModelAndView("redirect:/home");
-        } catch (RuntimeException ex) {
+        } catch (DomainException ex) {
             ModelAndView modelAndView = new ModelAndView("login");
             modelAndView.addObject("errorMessage", ex.getMessage());
             return modelAndView;
@@ -80,7 +81,7 @@ public class IndexController {
         try {
             userService.register(userRegisterRequest);
             return new ModelAndView("redirect:/login");
-        } catch (RuntimeException ex) {
+        } catch (DomainException ex) {
             ModelAndView modelAndView = new ModelAndView("register");
             modelAndView.addObject("errorMessage", ex.getMessage());
             return modelAndView;
