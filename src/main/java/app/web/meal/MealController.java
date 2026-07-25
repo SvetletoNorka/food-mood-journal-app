@@ -1,9 +1,11 @@
 package app.web.meal;
 
 import app.model.dto.meal.CreateMealRequest;
+import app.model.dto.meal.MealDetailsDto;
 import app.model.dto.meal.MealEntryRequest;
 import app.model.dto.meal.WellnessLogRequest;
 import app.service.food.FoodService;
+import app.service.insights.InsightsService;
 import app.service.meal.MealService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,10 +26,14 @@ public class MealController {
 
     private final MealService mealService;
     private final FoodService foodService;
+    private final InsightsService insightsService;
 
-    public MealController(MealService mealService, FoodService foodService) {
+    public MealController(MealService mealService,
+                          FoodService foodService,
+                          InsightsService insightsService) {
         this.mealService = mealService;
         this.foodService = foodService;
+        this.insightsService = insightsService;
     }
 
     @GetMapping
@@ -101,7 +108,8 @@ public class MealController {
     public ModelAndView saveWellness(@PathVariable UUID id,
                                      @Valid @ModelAttribute("wellnessLogRequest") WellnessLogRequest wellnessLogRequest,
                                      BindingResult bindingResult,
-                                     HttpSession session) {
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
         UUID userId = (UUID) session.getAttribute("user_id");
 
         if (bindingResult.hasErrors()) {
@@ -113,7 +121,13 @@ public class MealController {
         }
 
         mealService.saveWellnessLog(userId, id, wellnessLogRequest);
-        return new ModelAndView("redirect:/meals/" + id);
+        MealDetailsDto meal = mealService.findById(userId, id);
+        var recommendation = insightsService.generateFromMeal(userId, meal);
+
+        redirectAttributes.addFlashAttribute(
+                "successMessage",
+                "Wellness saved. New insight: " + recommendation.getTitle());
+        return new ModelAndView("redirect:/insights");
     }
 
     private CreateMealRequest defaultCreateMealRequest() {

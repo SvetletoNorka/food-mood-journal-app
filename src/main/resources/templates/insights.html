@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="bg" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/nav-side-bar.css">
+  <link rel="stylesheet" href="/css/home-common.css">
+  <link rel="stylesheet" href="/css/journal-theme.css">
+  <link rel="stylesheet" href="/css/journal-visuals.css">
+  <link rel="stylesheet" href="/css/insights.css">
+  <title>Insights</title>
+</head>
+<body class="journal-app-bg">
+<div th:replace="~{fragments/background-decor :: backgroundDecor}"></div>
+<main>
+  <div class="nav-bar">
+    <div th:replace="~{fragments/sidebar :: sidebar(${activePage})}"></div>
+  </div>
+  <div class="home-section insights-layout">
+    <div class="insights-header">
+      <div>
+        <h1>Insights</h1>
+        <p>Recommendations generated from your meal wellness scores.</p>
+      </div>
+      <form class="insights-filter" method="get" action="/insights">
+        <label for="status">Status</label>
+        <select id="status" name="status" onchange="this.form.submit()">
+          <option value="" th:selected="${currentStatus == null}">All</option>
+          <option th:each="s : ${T(app.model.dto.insights.RecommendationStatus).values()}"
+                  th:value="${s}"
+                  th:text="${s}"
+                  th:selected="${s == currentStatus}"></option>
+        </select>
+      </form>
+    </div>
+
+    <div class="insights-flash" th:if="${successMessage}" th:text="${successMessage}"></div>
+
+    <div class="empty-state" th:if="${#lists.isEmpty(recommendations)}">
+      <img src="/images/mood/neutral.svg" class="mood-emoji-lg" alt="">
+      <h2>No insights yet</h2>
+      <p>Log wellness after a meal to generate your first recommendation.</p>
+      <a href="/meals" class="link-accent-lilac">Go to meals →</a>
+    </div>
+
+    <div class="insights-list">
+      <div class="insight-card" th:each="rec : ${recommendations}" th:classappend="'status-' + ${#strings.toLowerCase(rec.status.name())}">
+        <div class="insight-card-top">
+          <h3 th:text="${rec.title}">Title</h3>
+          <span class="insight-status" th:text="${rec.status}">ACTIVE</span>
+        </div>
+        <p class="insight-message" th:text="${rec.message}">Message</p>
+        <div class="insight-meta">
+          <span th:if="${rec.moodScore != null}" th:text="'Mood ' + ${rec.moodScore} + '/10'"></span>
+          <span th:if="${rec.energyScore != null}" th:text="'Energy ' + ${rec.energyScore} + '/10'"></span>
+          <span th:if="${rec.foodNames != null}" th:text="${rec.foodNames}"></span>
+          <span th:if="${rec.createdAt != null}" th:text="${#temporals.format(rec.createdAt, 'dd MMM yyyy HH:mm')}"></span>
+        </div>
+        <div class="insight-actions" th:if="${rec.status.name() == 'ACTIVE'}">
+          <form th:action="@{/insights/{id}/apply(id=${rec.id})}" method="post">
+            <button type="submit" class="btn-apply">Apply</button>
+          </form>
+          <form th:action="@{/insights/{id}/dismiss(id=${rec.id})}" method="post">
+            <button type="submit" class="btn-dismiss">Dismiss</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="footer"><p>© 2026 Food Mood Journal. All rights reserved.</p></div>
+</body>
+</html>

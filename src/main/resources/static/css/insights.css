@@ -1,0 +1,130 @@
+.insights-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-self: stretch;
+}
+
+.insights-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.insights-header h1 {
+  margin: 0 0 4px;
+  font-size: 1.6rem;
+}
+
+.insights-header p {
+  margin: 0;
+  color: #666;
+}
+
+.insights-filter {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.insights-filter select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(196, 181, 253, 0.5);
+  background: #fff;
+}
+
+.insights-flash {
+  background: linear-gradient(145deg, #ecfdf5, #d1fae5);
+  border: 1px solid #6ee7b7;
+  color: #065f46;
+  padding: 12px 16px;
+  border-radius: 10px;
+}
+
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.insight-card {
+  background: linear-gradient(145deg, #ffffff, var(--journal-cream-card, #faf8f5));
+  border: 1px solid rgba(196, 181, 253, 0.35);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.insight-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.insight-card-top h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.insight-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.insight-card.status-applied .insight-status {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.insight-card.status-dismissed .insight-status {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.insight-message {
+  margin: 0 0 10px;
+  color: #444;
+  line-height: 1.45;
+}
+
+.insight-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 12px;
+}
+
+.insight-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.insight-actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.btn-apply {
+  background: #7c3aed;
+  color: #fff;
+}
+
+.btn-dismiss {
+  background: #f3f4f6;
+  color: #374151;
+}
