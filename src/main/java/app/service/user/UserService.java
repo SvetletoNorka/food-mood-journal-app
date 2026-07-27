@@ -2,11 +2,11 @@ package app.service.user;
 
 import app.exception.DuplicateEmailException;
 import app.exception.DuplicateUsernameException;
-import app.exception.InvalidCredentialsException;
+import app.exception.PasswordMismatchException;
 import app.exception.UserNotFoundException;
 import app.mapper.user.UserMapper;
+import app.model.dto.user.EditProfileRequest;
 import app.model.dto.user.UserDto;
-import app.model.dto.user.UserLoginRequest;
 import app.model.dto.user.UserRegisterRequest;
 import app.model.entity.user.User;
 import app.model.entity.user.UserRole;
@@ -14,10 +14,10 @@ import app.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -30,17 +30,6 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    public UserDto login(UserLoginRequest request) {
-        Optional<User> optionalUser = userRepository.findByUsername(request.getUsername());
-
-        if (optionalUser.isEmpty()
-                || !passwordEncoder.matches(request.getPassword(), optionalUser.get().getPassword())) {
-            throw new InvalidCredentialsException();
-        }
-
-        return UserMapper.toUserDto(optionalUser.get());
     }
 
     public UserDto register(UserRegisterRequest request) {
@@ -72,6 +61,29 @@ public class UserService {
                 .stream()
                 .map(UserMapper::toUserDto)
                 .toList();
+    }
+
+    public UserDto updateProfile(UUID userId, EditProfileRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+
+        if (!user.getEmail().equalsIgnoreCase(request.getEmail())) {
+            userRepository.findByEmail(request.getEmail())
+                    .ifPresent(existing -> {
+                        throw new DuplicateEmailException();
+                    });
+            user.setEmail(request.getEmail());
+        }
+
+        if (StringUtils.hasText(request.getNewPassword())) {
+            if (!request.getNewPassword().equals(request.getConfirmPassword())) {
+                throw new PasswordMismatchException();
+            }
+            user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        }
+
+        user.setUpdatedOn(LocalDateTime.now());
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 
     public void switchStatus(UUID id) {

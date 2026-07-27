@@ -1,8 +1,8 @@
 package app.web.statistics;
 
 import app.model.dto.statistics.StatisticsSort;
+import app.security.AuthenticationUtils;
 import app.service.statistics.StatisticsService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +22,8 @@ public class StatisticsController {
     }
 
     @GetMapping
-    public ModelAndView statistics(@RequestParam(defaultValue = "MOOD") StatisticsSort sort,
-                                   HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView statistics(@RequestParam(defaultValue = "MOOD") StatisticsSort sort) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         ModelAndView modelAndView = new ModelAndView("statistics");
         modelAndView.addObject("statistics", statisticsService.buildPage(userId, sort));

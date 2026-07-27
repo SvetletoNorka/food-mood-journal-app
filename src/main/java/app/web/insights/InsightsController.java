@@ -1,8 +1,8 @@
 package app.web.insights;
 
 import app.model.dto.insights.RecommendationStatus;
+import app.security.AuthenticationUtils;
 import app.service.insights.InsightsService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +19,8 @@ public class InsightsController {
     private final InsightsService insightsService;
 
     @GetMapping
-    public ModelAndView listInsights(
-            @RequestParam(required = false) RecommendationStatus status,
-            HttpSession session) {
-
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView listInsights(@RequestParam(required = false) RecommendationStatus status) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         ModelAndView modelAndView = new ModelAndView("insights");
         modelAndView.addObject("recommendations", insightsService.listForUser(userId, status));

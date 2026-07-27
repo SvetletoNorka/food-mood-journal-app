@@ -3,8 +3,8 @@ package app.web.food;
 import app.model.dto.food.CreateFoodRequest;
 import app.model.dto.food.EditFoodRequest;
 import app.model.dto.food.FoodDto;
+import app.security.AuthenticationUtils;
 import app.service.food.FoodService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,8 +24,8 @@ public class FoodController {
     }
 
     @GetMapping
-    public ModelAndView listFoods(HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView listFoods() {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         ModelAndView modelAndView = new ModelAndView("foods");
         modelAndView.addObject("foods", foodService.findAllForUser(userId));
@@ -44,9 +44,8 @@ public class FoodController {
 
     @PostMapping
     public ModelAndView createFood(@Valid @ModelAttribute("createFoodRequest") CreateFoodRequest createFoodRequest,
-                                   BindingResult bindingResult,
-                                   HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+                                   BindingResult bindingResult) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("food-form");
@@ -60,8 +59,8 @@ public class FoodController {
     }
 
     @GetMapping("/{id}/edit")
-    public ModelAndView editFoodForm(@PathVariable UUID id, HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView editFoodForm(@PathVariable UUID id) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
         FoodDto food = foodService.findById(userId, id);
 
         EditFoodRequest editFoodRequest = EditFoodRequest.builder()
@@ -83,8 +82,7 @@ public class FoodController {
     @PostMapping("/{id}")
     public ModelAndView updateFood(@PathVariable UUID id,
                                    @Valid @ModelAttribute("editFoodRequest") EditFoodRequest editFoodRequest,
-                                   BindingResult bindingResult,
-                                   HttpSession session) {
+                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("food-form");
             modelAndView.addObject("foodId", id);
@@ -93,14 +91,14 @@ public class FoodController {
             return modelAndView;
         }
 
-        UUID userId = (UUID) session.getAttribute("user_id");
+        UUID userId = AuthenticationUtils.getCurrentUserId();
         foodService.update(userId, id, editFoodRequest);
         return new ModelAndView("redirect:/foods");
     }
 
     @PostMapping("/{id}/delete")
-    public ModelAndView deleteFood(@PathVariable UUID id, HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView deleteFood(@PathVariable UUID id) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
         foodService.delete(userId, id);
         return new ModelAndView("redirect:/foods");
     }

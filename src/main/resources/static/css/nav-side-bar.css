@@ -105,6 +105,41 @@
   color: white;
 }
 
+.logout-form {
+  margin: 0;
+}
+
+.logout-form .logout {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 14px;
+  font-family: inherit;
+  color: white;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(145deg, #ff6767, #ff6767);
+}
+
+.logout-form .logout p {
+  margin: 0;
+}
+
+.logout-form .logout svg {
+  margin-left: auto;
+  margin-right: 4%;
+  width: 18px;
+}
+
+.logout-form .logout:hover {
+  background: linear-gradient(145deg, #ff5252, #ff6767);
+}
+
 .smart-wallet-nav-bar {
   display: flex;
   padding: 20px 0;

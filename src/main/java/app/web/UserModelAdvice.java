@@ -1,33 +1,28 @@
 package app.web;
 
 import app.model.entity.user.UserRole;
-import app.service.user.UserService;
-import jakarta.servlet.http.HttpSession;
+import app.security.AuthenticationMetadata;
+import app.security.AuthenticationUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.util.UUID;
 
 @ControllerAdvice
 public class UserModelAdvice {
 
-    private final UserService userService;
-
-    public UserModelAdvice(UserService userService) {
-        this.userService = userService;
+    @ModelAttribute("userRole")
+    public UserRole userRole() {
+        if (!AuthenticationUtils.isAuthenticated()) {
+            return null;
+        }
+        return AuthenticationUtils.getCurrentUser().getRole();
     }
 
-    @ModelAttribute("userRole")
-    public UserRole userRole(HttpSession session) {
-        if (session == null) {
+    @ModelAttribute("currentUsername")
+    public String currentUsername() {
+        if (!AuthenticationUtils.isAuthenticated()) {
             return null;
         }
-
-        UUID userId = (UUID) session.getAttribute("user_id");
-        if (userId == null) {
-            return null;
-        }
-
-        return userService.findById(userId).getRole();
+        AuthenticationMetadata user = AuthenticationUtils.getCurrentUser();
+        return user.getUsername();
     }
 }

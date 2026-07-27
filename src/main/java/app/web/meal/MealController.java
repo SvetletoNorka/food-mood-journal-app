@@ -4,10 +4,10 @@ import app.model.dto.meal.CreateMealRequest;
 import app.model.dto.meal.MealDetailsDto;
 import app.model.dto.meal.MealEntryRequest;
 import app.model.dto.meal.WellnessLogRequest;
+import app.security.AuthenticationUtils;
 import app.service.food.FoodService;
 import app.service.insights.InsightsService;
 import app.service.meal.MealService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -37,8 +37,8 @@ public class MealController {
     }
 
     @GetMapping
-    public ModelAndView listMeals(HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView listMeals() {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         ModelAndView modelAndView = new ModelAndView("meals");
         modelAndView.addObject("meals", mealService.findAllForUser(userId));
@@ -47,8 +47,8 @@ public class MealController {
     }
 
     @GetMapping("/new")
-    public ModelAndView newMealForm(HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView newMealForm() {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         ModelAndView modelAndView = new ModelAndView("meal-form");
         modelAndView.addObject("createMealRequest", defaultCreateMealRequest());
@@ -59,9 +59,8 @@ public class MealController {
 
     @PostMapping
     public ModelAndView createMeal(@Valid @ModelAttribute("createMealRequest") CreateMealRequest createMealRequest,
-                                     BindingResult bindingResult,
-                                     HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+                                   BindingResult bindingResult) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("meal-form");
@@ -76,8 +75,8 @@ public class MealController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView mealDetails(@PathVariable UUID id, HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView mealDetails(@PathVariable UUID id) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         ModelAndView modelAndView = new ModelAndView("meal-details");
         modelAndView.addObject("meal", mealService.findById(userId, id));
@@ -86,8 +85,8 @@ public class MealController {
     }
 
     @GetMapping("/{id}/wellness")
-    public ModelAndView wellnessForm(@PathVariable UUID id, HttpSession session) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+    public ModelAndView wellnessForm(@PathVariable UUID id) {
+        UUID userId = AuthenticationUtils.getCurrentUserId();
         var meal = mealService.findById(userId, id);
 
         WellnessLogRequest wellnessLogRequest = WellnessLogRequest.builder()
@@ -108,9 +107,8 @@ public class MealController {
     public ModelAndView saveWellness(@PathVariable UUID id,
                                      @Valid @ModelAttribute("wellnessLogRequest") WellnessLogRequest wellnessLogRequest,
                                      BindingResult bindingResult,
-                                     HttpSession session,
                                      RedirectAttributes redirectAttributes) {
-        UUID userId = (UUID) session.getAttribute("user_id");
+        UUID userId = AuthenticationUtils.getCurrentUserId();
 
         if (bindingResult.hasErrors()) {
             ModelAndView modelAndView = new ModelAndView("meal-wellness");

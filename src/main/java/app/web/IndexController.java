@@ -2,19 +2,17 @@ package app.web;
 
 import app.exception.DomainException;
 import app.model.dto.user.UserDto;
-import app.model.dto.user.UserLoginRequest;
 import app.model.dto.user.UserRegisterRequest;
+import app.security.AuthenticationUtils;
 import app.service.user.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.UUID;
 
 @Controller
 public class IndexController {
@@ -27,42 +25,31 @@ public class IndexController {
 
     @GetMapping("/")
     public String index() {
+        if (AuthenticationUtils.isAuthenticated()) {
+            return "redirect:/home";
+        }
         return "index";
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(HttpSession httpSession) {
-        if (isLoggedIn(httpSession)) {
+    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String error,
+                                     @RequestParam(value = "disabled", required = false) String disabled) {
+        if (AuthenticationUtils.isAuthenticated()) {
             return new ModelAndView("redirect:/home");
         }
 
         ModelAndView modelAndView = new ModelAndView("login");
-        modelAndView.addObject("userLoginRequest", UserLoginRequest.builder().build());
+        if (disabled != null) {
+            modelAndView.addObject("errorMessage", "Your account is deactivated. Contact an administrator.");
+        } else if (error != null) {
+            modelAndView.addObject("errorMessage", "Invalid username or password.");
+        }
         return modelAndView;
     }
 
-    @PostMapping("/login")
-    public ModelAndView login(@Valid @ModelAttribute("userLoginRequest") UserLoginRequest userLoginRequest,
-                              BindingResult bindingResult,
-                              HttpSession httpSession) {
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("login");
-        }
-
-        try {
-            UserDto user = userService.login(userLoginRequest);
-            httpSession.setAttribute("user_id", user.getId());
-            return new ModelAndView("redirect:/home");
-        } catch (DomainException ex) {
-            ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("errorMessage", ex.getMessage());
-            return modelAndView;
-        }
-    }
-
     @GetMapping("/register")
-    public ModelAndView getRegisterPage(HttpSession httpSession) {
-        if (isLoggedIn(httpSession)) {
+    public ModelAndView getRegisterPage() {
+        if (AuthenticationUtils.isAuthenticated()) {
             return new ModelAndView("redirect:/home");
         }
 
@@ -89,23 +76,12 @@ public class IndexController {
     }
 
     @GetMapping("/home")
-    public ModelAndView getHomePage(HttpSession httpSession) {
-        UUID userId = (UUID) httpSession.getAttribute("user_id");
-        UserDto user = userService.findById(userId);
+    public ModelAndView getHomePage() {
+        UserDto user = userService.findById(AuthenticationUtils.getCurrentUserId());
 
         ModelAndView modelAndView = new ModelAndView("home");
         modelAndView.addObject("user", user);
         modelAndView.addObject("activePage", "home");
         return modelAndView;
-    }
-
-    @GetMapping("/logout")
-    public ModelAndView logout(HttpSession httpSession) {
-        httpSession.invalidate();
-        return new ModelAndView("redirect:/");
-    }
-
-    private boolean isLoggedIn(HttpSession httpSession) {
-        return httpSession != null && httpSession.getAttribute("user_id") != null;
     }
 }
