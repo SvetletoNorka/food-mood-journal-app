@@ -2,6 +2,7 @@ package app.model.entity.meal;
 
 import app.model.entity.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -22,13 +23,16 @@ public class Meal {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private MealType mealType;
 
+    @NotNull
     @Column(nullable = false)
     private LocalDateTime eatenAt;
 
+    @NotNull
     @ManyToOne(optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;

@@ -24,10 +24,14 @@ public class SecurityConfiguration {
         http
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/register", "/error",
+                        .requestMatchers("/", "/login", "/register", "/error", "/access-denied",
                                 "/css/**", "/images/**", "/js/**", "/webjars/**").permitAll()
                         .requestMatchers("/users", "/users/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedHandler((request, response, accessDeniedException) ->
+                                response.sendRedirect("/access-denied"))
                 )
                 .formLogin(form -> form
                         .loginPage("/login")

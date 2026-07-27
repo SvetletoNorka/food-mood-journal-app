@@ -84,4 +84,11 @@ public class IndexController {
         modelAndView.addObject("activePage", "home");
         return modelAndView;
     }
+
+    @GetMapping("/access-denied")
+    public ModelAndView accessDenied() {
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("errorMessage", "You do not have permission to access this resource.");
+        return modelAndView;
+    }
 }
