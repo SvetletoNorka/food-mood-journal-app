@@ -8,11 +8,13 @@ import app.model.dto.insights.UpdateRecommendationRequest;
 import app.model.dto.meal.MealDetailsDto;
 import app.model.dto.meal.MealEntryDetailDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InsightsService {
@@ -37,22 +39,32 @@ public class InsightsService {
                 .totalCarbs(meal.getTotalCarbs())
                 .build();
 
-        return insightsClient.createRecommendation(userId, request);
+        RecommendationDto recommendation = insightsClient.createRecommendation(userId, request);
+        log.info("Generated recommendation id={} for userId={} from mealId={}",
+                recommendation.getId(), userId, meal.getId());
+        return recommendation;
     }
 
     public List<RecommendationDto> listForUser(UUID userId, RecommendationStatus status) {
-        return insightsClient.getRecommendations(userId, status);
+        List<RecommendationDto> recommendations = insightsClient.getRecommendations(userId, status);
+        log.info("Retrieved recommendations for userId={}, status={}, count={}",
+                userId, status, recommendations.size());
+        return recommendations;
     }
 
     public RecommendationDto apply(UUID recommendationId) {
-        return insightsClient.updateRecommendation(
+        RecommendationDto recommendation = insightsClient.updateRecommendation(
                 recommendationId,
                 UpdateRecommendationRequest.builder().status(RecommendationStatus.APPLIED).build());
+        log.info("Applied recommendation id={}", recommendationId);
+        return recommendation;
     }
 
     public RecommendationDto dismiss(UUID recommendationId) {
-        return insightsClient.updateRecommendation(
+        RecommendationDto recommendation = insightsClient.updateRecommendation(
                 recommendationId,
                 UpdateRecommendationRequest.builder().status(RecommendationStatus.DISMISSED).build());
+        log.info("Dismissed recommendation id={}", recommendationId);
+        return recommendation;
     }
 }

@@ -17,6 +17,7 @@ import app.repository.food.FoodRepository;
 import app.repository.meal.MealRepository;
 import app.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 public class MealService {
@@ -41,13 +43,16 @@ public class MealService {
     }
 
     public List<MealDetailsDto> findAllForUser(UUID ownerId) {
-        return mealRepository.findAllByOwnerIdOrderByEatenAtDesc(ownerId).stream()
+        List<MealDetailsDto> meals = mealRepository.findAllByOwnerIdOrderByEatenAtDesc(ownerId).stream()
                 .map(MealMapper::toDetailsDto)
                 .toList();
+        log.info("Retrieved meals for ownerId={}, count={}", ownerId, meals.size());
+        return meals;
     }
 
     public MealDetailsDto findById(UUID ownerId, UUID mealId) {
         Meal meal = getOwnedMeal(ownerId, mealId);
+        log.info("Loaded meal id={} for ownerId={}", mealId, ownerId);
         return MealMapper.toDetailsDto(meal);
     }
 
@@ -74,7 +79,9 @@ public class MealService {
             meal.getEntries().add(entry);
         }
 
-        return MealMapper.toDetailsDto(mealRepository.save(meal));
+        Meal saved = mealRepository.save(meal);
+        log.info("Created meal id={} type={} for ownerId={}", saved.getId(), saved.getMealType(), ownerId);
+        return MealMapper.toDetailsDto(saved);
     }
 
     public void saveWellnessLog(UUID ownerId, UUID mealId, WellnessLogRequest request) {
@@ -85,6 +92,7 @@ public class MealService {
             existing.setMoodScore(request.getMoodScore());
             existing.setEnergyScore(request.getEnergyScore());
             existing.setNotes(request.getNotes());
+            log.info("Updated wellness log for mealId={} ownerId={}", mealId, ownerId);
             return;
         }
 
@@ -98,6 +106,7 @@ public class MealService {
 
         meal.setWellnessLog(wellnessLog);
         mealRepository.save(meal);
+        log.info("Created wellness log for mealId={} ownerId={}", mealId, ownerId);
     }
 
     private Meal getOwnedMeal(UUID ownerId, UUID mealId) {

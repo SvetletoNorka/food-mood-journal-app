@@ -4,12 +4,14 @@ import app.model.dto.meal.MealDetailsDto;
 import app.model.dto.statistics.StatisticsPageDto;
 import app.model.dto.statistics.StatisticsSort;
 import app.service.meal.MealService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class StatisticsService {
 
@@ -39,13 +41,16 @@ public class StatisticsService {
                 .average()
                 .orElse(0);
 
-        return StatisticsPageDto.builder()
+        StatisticsPageDto page = StatisticsPageDto.builder()
                 .allMeals(allMeals)
                 .topFive(topFive)
                 .sort(sort)
                 .averageMood(round(averageMood))
                 .averageEnergy(round(averageEnergy))
                 .build();
+        log.info("Built statistics page for ownerId={} sort={} mealsCount={}",
+                ownerId, sort, allMeals.size());
+        return page;
     }
 
     private Comparator<MealDetailsDto> comparatorFor(StatisticsSort sort) {

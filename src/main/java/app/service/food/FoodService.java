@@ -11,11 +11,13 @@ import app.model.entity.user.User;
 import app.repository.food.FoodRepository;
 import app.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 public class FoodService {
@@ -29,19 +31,23 @@ public class FoodService {
     }
 
     public List<FoodDto> findAllForUser(UUID ownerId) {
-        return foodRepository.findAllByOwnerIdOrderByNameAsc(ownerId).stream()
+        List<FoodDto> foods = foodRepository.findAllByOwnerIdOrderByNameAsc(ownerId).stream()
                 .map(FoodMapper::toDto)
                 .toList();
+        log.info("Retrieved foods for ownerId={}, count={}", ownerId, foods.size());
+        return foods;
     }
 
     public FoodDto create(UUID ownerId, CreateFoodRequest request) {
         User owner = getOwner(ownerId);
         Food food = foodRepository.save(FoodMapper.toEntity(request, owner));
+        log.info("Created food id={} name={} for ownerId={}", food.getId(), food.getName(), ownerId);
         return FoodMapper.toDto(food);
     }
 
     public FoodDto findById(UUID ownerId, UUID foodId) {
         Food food = getOwnedFood(ownerId, foodId);
+        log.info("Loaded food id={} for ownerId={}", foodId, ownerId);
         return FoodMapper.toDto(food);
     }
 
@@ -49,11 +55,13 @@ public class FoodService {
         Food food = getOwnedFood(ownerId, foodId);
         FoodMapper.updateEntity(food, request);
         foodRepository.save(food);
+        log.info("Updated food id={} for ownerId={}", foodId, ownerId);
     }
 
     public void delete(UUID ownerId, UUID foodId) {
         Food food = getOwnedFood(ownerId, foodId);
         foodRepository.delete(food);
+        log.info("Deleted food id={} for ownerId={}", foodId, ownerId);
     }
 
     private Food getOwnedFood(UUID ownerId, UUID foodId) {

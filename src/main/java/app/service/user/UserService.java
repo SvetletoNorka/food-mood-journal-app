@@ -12,6 +12,7 @@ import app.model.entity.user.User;
 import app.model.entity.user.UserRole;
 import app.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
 public class UserService {
@@ -45,6 +47,7 @@ public class UserService {
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         User user = userRepository.save(UserMapper.toUserEntity(request));
+        log.info("Registered new user with username={} and id={}", user.getUsername(), user.getId());
 
         return UserMapper.toUserDto(user);
     }
@@ -52,15 +55,18 @@ public class UserService {
     public UserDto findById(UUID id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+        log.info("Loaded user profile for userId={}", id);
 
         return UserMapper.toUserDto(user);
     }
 
     public List<UserDto> getAllUsers() {
-        return userRepository.findAll()
+        List<UserDto> users = userRepository.findAll()
                 .stream()
                 .map(UserMapper::toUserDto)
                 .toList();
+        log.info("Retrieved all users, count={}", users.size());
+        return users;
     }
 
     public UserDto updateProfile(UUID userId, EditProfileRequest request) {
@@ -83,7 +89,9 @@ public class UserService {
         }
 
         user.setUpdatedOn(LocalDateTime.now());
-        return UserMapper.toUserDto(userRepository.save(user));
+        UserDto updated = UserMapper.toUserDto(userRepository.save(user));
+        log.info("Updated profile for userId={}", userId);
+        return updated;
     }
 
     public void switchStatus(UUID id) {
@@ -93,6 +101,7 @@ public class UserService {
         user.setActive(!user.isActive());
         user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
+        log.info("Switched active status for userId={} to active={}", id, user.isActive());
     }
 
     public void switchRole(UUID id) {
@@ -106,5 +115,6 @@ public class UserService {
         }
         user.setUpdatedOn(LocalDateTime.now());
         userRepository.save(user);
+        log.info("Switched role for userId={} to role={}", id, user.getRole());
     }
 }
