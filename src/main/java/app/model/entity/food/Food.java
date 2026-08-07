@@ -1,6 +1,5 @@
 package app.model.entity.food;
 
-import app.model.entity.meal.MealEntry;
 import app.model.entity.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,8 +9,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -52,8 +49,4 @@ public class Food {
     @ManyToOne(optional = false)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
-
-    @OneToMany(mappedBy = "food")
-    @Builder.Default
-    private List<MealEntry> entries = new ArrayList<>();
 }

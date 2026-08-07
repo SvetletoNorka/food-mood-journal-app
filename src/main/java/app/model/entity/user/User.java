@@ -1,7 +1,5 @@
 package app.model.entity.user;
 
-import app.model.entity.food.Food;
-import app.model.entity.meal.Meal;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -10,8 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -58,12 +54,4 @@ public class User {
     @NotNull
     @Column(nullable = false)
     private LocalDateTime updatedOn;
-
-    @OneToMany(mappedBy = "owner")
-    @Builder.Default
-    private List<Food> foods = new ArrayList<>();
-
-    @OneToMany(mappedBy = "owner")
-    @Builder.Default
-    private List<Meal> meals = new ArrayList<>();
 }
