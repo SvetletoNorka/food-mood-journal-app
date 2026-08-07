@@ -12,10 +12,14 @@ import app.repository.food.FoodRepository;
 import app.repository.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+
+import static app.config.CacheConfiguration.FOODS_CACHE;
 
 @Slf4j
 @Service
@@ -30,6 +34,7 @@ public class FoodService {
         this.userRepository = userRepository;
     }
 
+    @Cacheable(cacheNames = FOODS_CACHE, key = "#ownerId")
     public List<FoodDto> findAllForUser(UUID ownerId) {
         List<FoodDto> foods = foodRepository.findAllByOwnerIdOrderByNameAsc(ownerId).stream()
                 .map(FoodMapper::toDto)
@@ -38,6 +43,7 @@ public class FoodService {
         return foods;
     }
 
+    @CacheEvict(cacheNames = FOODS_CACHE, key = "#ownerId")
     public FoodDto create(UUID ownerId, CreateFoodRequest request) {
         User owner = getOwner(ownerId);
         Food food = foodRepository.save(FoodMapper.toEntity(request, owner));
@@ -45,12 +51,14 @@ public class FoodService {
         return FoodMapper.toDto(food);
     }
 
+    @Cacheable(cacheNames = FOODS_CACHE, key = "#ownerId + '-' + #foodId")
     public FoodDto findById(UUID ownerId, UUID foodId) {
         Food food = getOwnedFood(ownerId, foodId);
         log.info("Loaded food id={} for ownerId={}", foodId, ownerId);
         return FoodMapper.toDto(food);
     }
 
+    @CacheEvict(cacheNames = FOODS_CACHE, allEntries = true)
     public void update(UUID ownerId, UUID foodId, EditFoodRequest request) {
         Food food = getOwnedFood(ownerId, foodId);
         FoodMapper.updateEntity(food, request);
@@ -58,6 +66,7 @@ public class FoodService {
         log.info("Updated food id={} for ownerId={}", foodId, ownerId);
     }
 
+    @CacheEvict(cacheNames = FOODS_CACHE, allEntries = true)
     public void delete(UUID ownerId, UUID foodId) {
         Food food = getOwnedFood(ownerId, foodId);
         foodRepository.delete(food);
