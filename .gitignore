@@ -22,6 +22,9 @@ HELP.md
 .env
 .env.*
 !.env.example
+!src/main/resources/application.properties
+!src/main/resources/application-prod.properties
+!src/test/resources/application-test.properties
 
 # IDE - IntelliJ IDEA
 .idea/
