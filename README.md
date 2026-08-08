@@ -50,7 +50,9 @@ A web application for tracking food intake and mood after meals. Users can log f
 
 ### Food Mood Insights Service
 
-The main application integrates with the **food-mood-insights-service** REST microservice to generate and manage meal recommendations.
+The main application integrates with the **food-mood-insights-service** REST microservice to generate and manage meal recommendations based on mood, energy, and meal macros.
+
+Repository: [food-mood-insights-service](https://github.com/SvetletoNorka/food-mood-insights-service)
 
 | Detail | Value |
 |--------|--------|
