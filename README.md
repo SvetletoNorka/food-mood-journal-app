@@ -1,5 +1,9 @@
 # Food Mood Journal
 
+**Live demo:** [https://food-mood-journal-app.onrender.com](https://food-mood-journal-app.onrender.com)
+
+> Free Render instances may sleep after inactivity — the first load can take 30–90 seconds.
+
 A web application for tracking food intake and mood after meals. Users can log foods, meals, and wellness scores to discover which foods make them feel their best.
 
 ## Description
@@ -42,7 +46,7 @@ A web application for tracking food intake and mood after meals. Users can log f
 | Security | Spring Security 6 (form login, method security) |
 | Web | Spring MVC, Thymeleaf |
 | Persistence | Spring Data JPA, Hibernate |
-| Database | MySQL |
+| Database | MySQL (local) / PostgreSQL (Render) |
 | Integration | Spring Cloud OpenFeign |
 | Other | Lombok, Bean Validation, Spring Actuator, DevTools, Spring Cache |
 
